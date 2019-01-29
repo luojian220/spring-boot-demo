@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.luno.softone.dao.SysWeixinMenuDao">
+
+    <select id="queryRolelist" resultType="com.luno.softone.model.dto.ApiSysMenuRoleDto">
+        SELECT
+        m.parent_id,
+        m.wx_menu_id as menuId,
+        m.perms,
+        m.`name`
+        FROM sys_user_role ur
+        LEFT JOIN sys_weixin_role_menu rm ON ur.role_id = rm.role_id
+        LEFT JOIN sys_weixin_menu m ON rm.menu_id = m.wx_menu_id
+        WHERE ur.user_id = #{userId} and m.status=0 and m.perms='1'
+    </select>
+
+    <select id="queryList" resultType="com.luno.softone.model.entity.SysWeixinMenuEntity">
+        select m.*,(select p.name from sys_weixin_menu p where p.wx_menu_id = m.parent_id) as parentName
+        from sys_weixin_menu m WHERE m.status =0
+        <if test="menuName != null and menuName.trim() != ''">
+            and m.name like concat('%',#{menuName},'%')
+        </if>
+        <if test="parentName != null and parentName.trim() != ''">
+            AND exists(SELECT 1 FROM sys_weixin_menu WHERE m.parent_id=sys_weixin_menu.wx_menu_id AND sys_weixin_menu.name LIKE concat('%',#{parentName},'%'))
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by m.${sidx} ${order}
+            </when>
+            <otherwise>
+                order by m.order_num asc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!-- 查询用户的权限列表 -->
+    <select id="queryUserList" resultType="com.luno.softone.model.entity.SysWeixinMenuEntity">
+		select distinct m.*,(select p.name from sys_weixin_menu p where p.wx_menu_id = m.parent_id) as parentName
+			from sys_user_role ur
+			LEFT JOIN sys_weixin_role_menu rm on ur.role_id = rm.role_id
+			LEFT JOIN sys_weixin_menu m on rm.menu_id = m.wx_menu_id AND m.status = 0
+		where ur.user_id = #{userId} order by m.order_num asc
+	</select>
+</mapper>

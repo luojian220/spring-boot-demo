@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.luno.softone.dao.SysSeqDao">
+
+    <select id="getStaffSeq" resultType="java.lang.Integer">
+        select f_seq_staff()
+    </select>
+
+    <select id="getCustomerSeq" resultType="java.lang.Integer">
+        select f_seq_customer()
+    </select>
+
+    <select id="getNewCaseSeq" resultType="java.lang.Integer">
+        select f_seq_newcase()
+    </select>
+
+    <!--<select id="createAccountID" resultType="java.lang.String">
+        select nextValAddPrefix('createAccountID')
+    </select>
+
+    <update id="updateSeq" >
+        update sequence set current_val = current_val + increment_val  where seq_name = 'createAccountID'
+    </update>
+
+    <select id="getSeq" resultType="java.lang.String">
+        select   CONCAT(prefix,current_val)  from sequence where seq_name = 'createAccountID'
+    </select>-->
+</mapper>

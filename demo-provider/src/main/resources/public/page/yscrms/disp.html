@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>调度统计</title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <Row :gutter="16">
+            <div class="search-group">
+                <i-col span="4">
+                    <i-select v-model="q.staffId" @on-enter="query" placeholder="调度员工" style="width:100%;height: 32px">
+                        <i-option v-for="staff in rptStaffList" :value="staff.staffId" :key="staff.staffId">{{staff.name}}
+                        </i-option>
+                    </i-select>
+                </i-col>
+                <i-col span="4">
+                    <Date-picker type="date" v-model="q.beginTime" format="yyyy-MM-dd" placeholder="调度起始日期"></Date-picker>
+                </i-col>
+                <i-col span="4">
+                    <Date-picker type="date" v-model="q.endTime" format="yyyy-MM-dd" placeholder="调度结束日期"></Date-picker>
+                </i-col>
+                <i-button @click="query">&nbsp;统计</i-button>
+                #if($shiro.hasPermission("stats:disp:export"))
+                <i-button type="info" @click="exportDisp"><i class="fa fa-cloud-download"></i>&nbsp;导出</i-button>
+                #end
+            </div>
+        </Row>
+        <table id="jqGrid"></table>
+
+    </div>
+</div>
+
+<script src="${rc.contextPath}/js/yscrms/disp.js?v=${jsVersion}"></script>
+</body>
+</html>

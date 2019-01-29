@@ -1,0 +1,36 @@
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+<!-- v3.1.5  -->
+<script src="${rc.contextPath}/statics/ivew315/dist/iview.min.js?v=${jsVersion}"></script>
+<script src="${rc.contextPath}/statics/ivew315/dist/babel.js?v=${jsVersion}"></script>
+<link rel="stylesheet" href="${rc.contextPath}/statics/ivew315/dist/styles/iview.css?v=${jsVersion}">
+
+<script type="text/jsx"
+    data-presets="es2017,react,stage-0"
+    data-plugins="transform-decorators-legacy">
+    var Main = {
+        data () {
+            return {
+                datePickRange: {
+                    disabledDate (date) {
+                        return date && date.valueOf() < Date.now() - 86400000;
+                    }
+                }
+            }
+        }
+    }
+var Component = Vue.extend(Main)
+new Component().$mount('#app')
+new Component().$mount('#dp1')
+new Component().$mount('#dp2')
+new Component().$mount('#dp3')
+new Component().$mount('#dp4')
+new Component().$mount('#dp5')
+new Component().$mount('#dp6')
+new Component().$mount('#dp7')
+new Component().$mount('#dp8')
+new Component().$mount('#dp9')
+new Component().$mount('#dp10')
+</script>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+        <Row :gutter="16">
+            <div class="search-group">
+                <i-col span="4">
+                    <i-select
+                            v-model="q.name"
+                            filterable
+                            remote
+                            :remote-method="filterCuName"
+                            :loading="loadingFilterCuName" placeholder="客户名称">
+                        <i-option v-for="(option, index) in customerOptions" :value="option.label" :key="option.label" :label="option.label"></i-option>
+                    </i-select>
+                </i-col>
+                <i-col span="4">
+                    <i-input v-model="q.content" @on-enter="query" placeholder="跟踪日志"/>
+                </i-col>
+                <i-col span="4">
+                    <i-select v-model="q.cuIsVip" placeholder="客户类型">
+                        <i-option value="1">VIP</i-option>
+                        <i-option value="0">单次客户</i-option>
+                    </i-select>
+                </i-col>
+                <i-col span="4">
+                    <i-select v-model="q.cuMarketEmpId" filterable placeholder="销售负责人">
+                        <i-option v-for="staff in staffList" :value="staff.staffId" :key="staff.staffId">{{staff.name}}</i-option>
+                    </i-select>
+                </i-col>
+                <i-button @click="query">查询</i-button>
+                <i-button @click="reloadSearch">重置</i-button>
+            </div>
+        </Row>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+</div>
+
+<script src="${rc.contextPath}/js/yscrms/customer_follow.js?v=${jsVersion}"></script>
+</body>
+</html>

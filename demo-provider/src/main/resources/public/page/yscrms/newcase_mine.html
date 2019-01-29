@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    #parse("sys/header.html")
+    <style type="text/css">
+        #newCaseInfo .ivu-form-item {
+            margin-bottom: 8px;
+            vertical-align: top;
+            zoom: 1;
+        }
+    </style>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+        <Row :gutter="16">
+            <div class="search-group">
+                <i-col span="3">
+                    <i-input v-model="q.ncNumber" @on-enter="query" placeholder="案件编号"/>
+                </i-col>
+                <i-col span="4">
+                    <!--<i-input v-model="q.ncCuName" @on-enter="query" placeholder="客户名称"/>-->
+                    <i-select
+                            v-model="q.ncCuName"
+                            filterable
+                            remote
+                            :remote-method="filterCuName"
+                            :loading="loadingFilterCuName" placeholder="客户名称">
+                        <i-option v-for="(option, index) in customerOptions" :value="option.label" :key="option.label" :label="option.label"></i-option>
+                    </i-select>
+                </i-col>
+                <i-col span="3">
+                    <!--<i-input v-model="q.ncCaseType" @on-enter="query" placeholder="案件类型"/>-->
+                    <i-select v-model="q.ncCaseType" @on-enter="query" filterable placeholder="案件类型">
+                        <i-option v-for="item in caseTypeList" :value="item.name" :key="item.id">{{item.name}}</i-option>
+                    </i-select>
+                </i-col>
+                <!--<i-col span="4">
+                    <i-select v-model="q.isFinish" @on-enter="query" placeholder="案件状态">
+                        <i-option value="N">未完成</i-option>&lt;!&ndash;包括外勤退回/已调度/已接受&ndash;&gt;
+                        <i-option value="Y">已完成</i-option>
+                    </i-select>
+                </i-col>-->
+                <i-col span="3">
+                    <Date-picker type="date" placeholder="开始时间" format="yyyy-MM-dd"
+                                 v-model="q.beginTime"></Date-picker>
+                </i-col>
+                <i-col span="3">
+                    <Date-picker type="date" placeholder="结束时间" format="yyyy-MM-dd"
+                                 v-model="q.endTime"></Date-picker>
+                </i-col>
+
+                <i-button @click="query">查询</i-button>
+                <i-button @click="reloadSearch">重置</i-button>
+            </div>
+            <div class="buttons-group">
+
+                <i-button type="info" @click="query_dispatch"><i class="fa fa-pencil-square-o" ></i>&nbsp;查看</i-button>
+            </div>
+        </Row>
+	    <table id="jqGrid"></table>
+	    <div id="jqGridPager"></div>
+    </div>
+
+    <Card v-show="!showList" id="newCaseInfo">
+        <p slot="title">{{title}}</p>
+		<i-form  :model="newCase" :label-width="100">
+            <Form-item label="案件编号" prop="ncNumber">
+                <i-input v-model="newCase.ncNumber" readonly placeholder="系统生成"/>
+            </Form-item>
+            <!--<Form-item label="客户id" prop="ncCuId">
+                <i-input v-model="newCase.ncCuId" placeholder="客户id"/>
+            </Form-item>
+            <Form-item label="客户编号" prop="ncCuNumber">
+                <i-input v-model="newCase.ncCuNumber" placeholder="客户编号"/>
+            </Form-item>-->
+            <Form-item label="客户名称" prop="ncCuName">
+                <!--<i-input v-model="newCase.ncCuName" placeholder="客户名称"/>-->
+                <i-input v-model="newCase.ncCuName" readonly placeholder="客户名称"/>
+            </Form-item>
+            <Form-item label="客户地址" prop="ncAddress">
+                <i-input v-model="newCase.ncAddress" readonly placeholder="客户地址"/>
+            </Form-item>
+            <Form-item label="联系人" prop="ncContactPerson">
+                <i-input v-model="newCase.ncContactPerson" readonly placeholder="联系人"/>
+            </Form-item>
+            <Form-item label="联系电话" prop="ncContactPhone">
+                <i-input v-model="newCase.ncContactPhone" readonly placeholder="联系电话"/>
+            </Form-item>
+            <Form-item label="要求上门时间" prop="ncTaskTime">
+                <Date-picker type="datetime" v-model="newCase.ncTaskTime" readonly format="yyyy-MM-dd HH:mm"
+                             placeholder="上门时间"></Date-picker>
+            </Form-item>
+            <Form-item label="案件类型" prop="ncCaseType">
+                <i-input v-model="newCase.ncCaseType" readonly placeholder="案件类型"/>
+                <!--<i-select v-model="newCase.ncCaseType" filterable readonly placeholder="案件类型">
+                    <i-option v-for="item in caseTypeList" :value="item.name" :key="item.id">{{item.name}}</i-option>
+                </i-select>-->
+            </Form-item>
+            <!--<Form-item label="案件状态" prop="ncCaseState">
+                <i-input v-model="newCase.ncCaseState" placeholder="案件状态"/>
+            </Form-item>
+            <Form-item label="默认状态" prop="ncDefaultState">
+                <i-input v-model="newCase.ncDefaultState" placeholder="默认状态"/>
+            </Form-item>
+            <Form-item label="设备配置" prop="ncMachineConfig">
+                <i-input v-model="newCase.ncMachineConfig" placeholder="设备配置"/>
+            </Form-item>
+            <Form-item label="是否评价" prop="ncIsReview">
+                <i-input v-model="newCase.ncIsReview" placeholder="是否评价"/>
+            </Form-item>
+            <Form-item label="是否多人任务" prop="ncIsManyTask">
+                <i-input v-model="newCase.ncIsManyTask" placeholder="是否多人任务"/>
+            </Form-item>-->
+            <!--<Form-item label="创建人编号" prop="ncAddEmpId">
+                <i-input v-model="newCase.ncAddEmpId" placeholder="创建人编号"/>
+            </Form-item>
+            <Form-item label="创建人名称" prop="ncAddEmpName">
+                <i-input v-model="newCase.ncAddEmpName" placeholder="创建人名称"/>
+            </Form-item>
+            <Form-item label="创建时间" prop="ncAddTime">
+                <i-input v-model="newCase.ncAddTime" placeholder="创建时间"/>
+            </Form-item>
+            <Form-item label="更新人名称" prop="ncUpEmpName">
+                <i-input v-model="newCase.ncUpEmpName" placeholder="更新人名称"/>
+            </Form-item>
+            <Form-item label="更新时间" prop="ncUpTime">
+                <i-input v-model="newCase.ncUpTime" placeholder="更新时间"/>
+            </Form-item>-->
+            <Form-item label="案件描述" prop="ncRemark">
+                <i-input v-model="newCase.ncRemark" readonly placeholder="案件描述"/>
+            </Form-item>
+            <Form-item label="前三次处理技术" prop="threeTechList">
+                <span v-for="item in newCase.threeTechList" :value="item.name" :key="item.name">{{item.name}}   {{item.dateStr}}<br/></span>
+            </Form-item>
+            <!--<Form-item label="" prop="ncOpenNumber">
+                <i-input v-model="newCase.ncOpenNumber" placeholder=""/>
+            </Form-item>
+            <Form-item label="" prop="ncOpenName">
+                <i-input v-model="newCase.ncOpenName" placeholder=""/>
+            </Form-item>
+            <Form-item label="" prop="ncOpenTime">
+                <i-input v-model="newCase.ncOpenTime" placeholder=""/>
+            </Form-item>-->
+        </i-form>
+	</Card>
+    <Card v-show="!showList && data1.length > 0">
+        <p slot="title">取消调度列表</p>
+        <!--取消信息列表-->
+        <i-table :columns="columns1" :data="data1"></i-table>
+    </Card>
+    <Card v-show="!showList">
+        <p slot="title">调度信息</p>
+        <i-form ref="caseModifyRecord" :model="caseModifyRecord"  :rules="ruleValidate" :label-width="100">
+            <Form-item label="调度人" prop="cdDispatchName">
+                <i-input v-model="dispatchInfo.cdDispatchName" readonly  placeholder="调度人" />
+            </Form-item>
+            <Form-item label="调度时间" prop="cdTime">
+                <Date-picker type="datetime" readonly v-model="dispatchInfo.cdTime" format="yyyy-MM-dd HH:mm"
+                             placeholder="调度时间"></Date-picker>
+            </Form-item>
+            <Form-item label="任务上门时间" prop="cdTaskTime">
+                <Date-picker type="datetime" readonly v-model="dispatchInfo.cdTaskTime" format="yyyy-MM-dd HH:mm"
+                             placeholder="任务上门时间"></Date-picker>
+            </Form-item>
+            <Form-item label="案件负责人" prop="charges">
+                <i-select v-model="dispatchInfo.charges" disabled multiple placeholder="案件负责人 第一个是主负责人，其后是协助人">
+                    <i-option v-for="staff in staffList" :value="staff.staffId" :key="staff.staffId">{{staff.name}}</i-option>
+                </i-select>
+            </Form-item>
+            <Form-item label="处理建议" prop="cdSuggestion">
+                <i-input v-model="dispatchInfo.cdSuggestion" readonly type="textarea" :rows="4" placeholder="处理建议"/>
+            </Form-item>
+            <Form-item label="销售负责人" prop="cuMarketEmpId">
+           	     <i-input v-model="customer.cuMarketEmpName" readonly   placeholder="销售负责人"/>
+            </Form-item>
+
+            <Form-item label="处理方式" prop="cmrType" v-show="!showIsFinishFlag">
+                <Radio-group v-model="caseModifyRecord.cmrType" @on-change="change_cmrType">
+                    <Radio label="4">结案</Radio>
+                    <Radio label="5">结案并转单</Radio>
+                    <Radio label="1">外勤退回</Radio>
+                    <Radio label="10">转咨询</Radio>
+                    <!--<Radio label="8">客户撤案</Radio>-->
+                </Radio-group>
+            </Form-item>
+            <Form-item v-if="caseModifyRecord.cmrType==4 || caseModifyRecord.cmrType==5" v-show="!showIsFinishFlag" label="服务单号" prop="cmrServiceNumber">
+                <i-input  v-model="caseModifyRecord.cmrServiceNumber" maxlength="7" placeholder="服务单号"/>
+            </Form-item>
+            <Form-item v-if="caseModifyRecord.cmrType==4 || caseModifyRecord.cmrType==5" v-show="!showIsFinishFlag" label="解决方案" prop="cmrSolution">
+                <i-input v-model="caseModifyRecord.cmrSolution" type="textarea" :rows="4" placeholder="解决方案"/>
+            </Form-item>
+            <Form-item v-if="caseModifyRecord.cmrType==5 || caseModifyRecord.cmrType==1 || caseModifyRecord.cmrType==10 || caseModifyRecord.cmrType==8"
+                       v-show="!showIsFinishFlag" :label="cmrReasonShowName" prop="cmrReason">
+                <i-input v-model="caseModifyRecord.cmrReason" id="cmrReason" type="textarea" :rows="4" placeholder=""/>
+            </Form-item>
+            <Form-item v-show="!showIsFinishFlag">
+                <i-button type="primary" @click="task_complete('caseModifyRecord')">提交</i-button>
+                <i-button type="warning" @click="reload" style="margin-left: 8px"/>返回</i-button>
+            </Form-item>
+        </i-form>
+    </Card>
+    <Card v-show="showIsFinishFlag && !showList">
+        <p slot="title">完成信息</p>
+        <i-form ref="caseModifyRecord2" :model="caseModifyRecord"  :rules="ruleValidate_updateSolution" :label-width="100">
+            <Form-item label="案件负责人" prop="charges">
+                <i-select v-model="dispatchInfo.charges" disabled multiple placeholder="案件负责人 第一个是主负责人，其后是协助人">
+                    <i-option v-for="staff in staffList" :value="staff.staffId" :key="staff.staffId">{{staff.name}}</i-option>
+                </i-select>
+            </Form-item>
+
+            <Form-item label="完成时间" prop="cmrCreateTime">
+                <Date-picker type="datetime" readonly v-model="caseModifyRecord.cmrCreateTime" format="yyyy-MM-dd HH:mm"
+                             placeholder="完成时间"></Date-picker>
+            </Form-item>
+            <Form-item label="服务单号" prop="cmrServiceNumber">
+                <i-input v-model="caseModifyRecord.cmrServiceNumber" readonly placeholder="服务单号"/>
+            </Form-item>
+            <Form-item label="解决方案" prop="cmrSolution">
+                <i-input v-model="caseModifyRecord.cmrSolution" :disabled="disabledCmrSolution" type="textarea" :rows="4" placeholder="解决方案"/>
+            </Form-item>
+            <Form-item>
+                <i-switch v-show="showUpdateSolution" v-model="switchCmrSolution" size="large" @on-change="updateSolutionTag">
+                    <span slot="open">放弃</span>
+                    <span slot="close">修改</span>
+                </i-switch>
+                <i-button type="primary" v-show="!disabledCmrSolution" @click="updateSolution('caseModifyRecord2')">提交</i-button>
+                <i-button type="warning" @click="reload" style="margin-left: 8px"/>返回</i-button>
+            </Form-item>
+        </i-form>
+    </Card>
+</div>
+
+<script src="${rc.contextPath}/js/yscrms/newcase_mine.js?v=${jsVersion}"></script>
+</body>
+</html>

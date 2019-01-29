@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sykj.common.dao.SysSignDao">
+
+    <resultMap type="com.luno.softone.model.entity.SysSignEntity" id="BaseResultMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="staffId" column="staff_id"/>
+        <result property="type" column="type"/>
+        <result property="signTime" column="sign_time"/>
+        <result property="address" column="address"/>
+        <result property="radius" column="radius"/>
+        <result property="ncNumber" column="nc_number"/>
+        <result property="caseTime" column="case_time"/>
+        <result property="longitude" column="longitude"/>
+        <result property="latitude" column="latitude"/>
+        <result property="bizType" column="biz_type"/>
+    </resultMap>
+
+    <select id="queryObject" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        `id`,
+	    `name`,
+	    `staff_id`,
+	    `type`,
+	    `sign_time`,
+	    `address`,
+	    `radius`,
+	    `nc_number`,
+	    `case_time`,
+	    `longitude`,
+	    `latitude`
+        from sys_sign
+        where id = #{id}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from sys_sign where id = #{id}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from sys_sign where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="save" parameterType="com.luno.softone.model.entity.SysSignEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_sign(
+          `name`,
+          `staff_id`,
+          `type`,
+          `sign_time`,
+          `address`,
+          `radius`,
+          `nc_number`,
+          `case_time`,
+          `longitude`,
+          `latitude`,
+          `biz_type` )
+		values(
+          #{name},
+          #{staffId},
+          #{type},
+          #{signTime},
+          #{address},
+          #{radius},
+          #{ncNumber},
+          #{caseTime},
+          #{longitude},
+          #{latitude} ,
+          #{bizType} )
+	</insert>
+
+    <update id="update" parameterType="com.luno.softone.model.entity.SysSignEntity">
+        update sys_sign
+        <set>
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="staffId != null">
+                `staff_id` = #{staffId},
+            </if>
+            <if test="type != null">
+                `type` = #{type},
+            </if>
+            <if test="signTime != null">
+                `sign_time` = #{signTime},
+            </if>
+            <if test="address != null">
+                `address` = #{address},
+            </if>
+            <if test="radius != null">
+                `radius` = #{radius},
+            </if>
+            <if test="ncNumber != null">
+                `nc_number` = #{ncNumber},
+            </if>
+            <if test="caseTime != null">
+                `case_time` = #{caseTime},
+            </if>
+            <if test="longitude != null">
+                `longitude` = #{longitude},
+            </if>
+            <if test="latitude != null">
+                `latitude` = #{latitude}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="queryList" resultType="com.luno.softone.model.entity.SysSignEntity">
+        select
+        ss.`id`,
+        ss.`name`,
+        ss.`staff_id`,
+        ss.`type`,
+        ss.`sign_time`,
+        ss.`address`,
+        ss.`radius`,
+        ss.`nc_number`,
+        ss.`case_time`,
+        ss.`longitude`,
+        ss.`latitude`,
+         nc.nc_cu_name ncCuName,
+         nc_address ncAddress,
+         cd.cd_task_time cdTaskTime
+         FROM `sys_sign` ss LEFT JOIN case_dispatch cd on ss.nc_number=cd.cd_nc_number 
+         LEFT JOIN new_case nc on nc.nc_id=cd.cd_nc_id
+        WHERE 1=1
+        <if test="staffId != null">
+            AND ss.`staff_id` = #{staffId}
+        </if>
+        <if test="name != null and name.trim() != ''">
+            AND ss.name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="ncNumber != null and ncNumber.trim() != ''">
+            AND ss.nc_number = #{ncNumber}
+        </if>
+        <if test="beginTime != null">
+            AND ss.sign_time &gt;= #{beginTime}
+        </if>
+        <if test="endTime != null">
+            AND ss.sign_time &lt; #{endTime}
+        </if>
+        <if test="bizType != null">
+            AND ss.biz_type = #{bizType}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by ss.id 
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from sys_sign
+        WHERE 1=1
+        <if test="staffId != null">
+            AND `staff_id` = #{staffId}
+        </if>
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="ncNumber != null and ncNumber.trim() != ''">
+            AND nc_number = #{ncNumber}
+        </if>
+        <if test="beginTime != null">
+            AND sign_time &gt;= #{beginTime}
+        </if>
+        <if test="endTime != null">
+            AND sign_time &lt; #{endTime}
+        </if>
+        <if test="bizType != null">
+            AND biz_type = #{bizType}
+        </if>
+    </select>
+    <select id="queryCurrentDayKaoQinList" resultType="com.luno.softone.model.entity.SysSignEntity"
+            parameterType="map">
+      select
+        `id`,
+        `name`,
+        `staff_id`,
+        `type`,
+        `sign_time`,
+        `address`,
+        `radius`,
+        `nc_number`,
+        `case_time`,
+        `longitude`,
+        `latitude`
+        from sys_sign
+        WHERE biz_type = #{bizType}
+        AND staff_id = #{staffId}
+        <if test="ncNumber != null and ncNumber.trim() != ''">
+            AND nc_number = #{ncNumber}
+        </if>
+        <if test="type != null and type.trim() != ''">
+            AND type = #{type}
+        </if>
+        AND DATE_FORMAT(sign_time,'%Y-%m-%d') = DATE_FORMAT(NOW(),'%Y-%m-%d')
+         order by id 
+    </select>
+</mapper>

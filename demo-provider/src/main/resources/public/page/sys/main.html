@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>欢迎页</title>
+    #parse("sys/header.html")
+	<style>
+		.pro_name a{color: #4183c4;}
+		.osc_git_title{background-color: #fff;}
+		.osc_git_box{background-color: #fff;}
+		.osc_git_box{border-color: #E3E9ED;margin: 20px;}
+		.osc_git_info{color: #666;}
+		.osc_git_main a{color: #9B9B9B;}
+	</style>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Expires" content="0">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-control" content="no-cache">
+	<meta http-equiv="Cache" content="no-cache">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/login.css">
+</head>
+<body class="signin">
+<script type="text/javascript">
+//var title=$(".sysinfo" , parent.document).html()+"  版本${jsVersion}";
+$(".sysinfo" , parent.document).html("${systemName} 版本${jsVersion}");
+$("title", parent.document).html("${systemName}");
+</script>
+</body>
+</html>

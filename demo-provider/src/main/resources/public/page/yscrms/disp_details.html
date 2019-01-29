@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>调度记录列表</title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+</div>
+
+<script src="${rc.contextPath}/js/yscrms/disp_details.js?v=${jsVersion}"></script>
+</body>
+</html>

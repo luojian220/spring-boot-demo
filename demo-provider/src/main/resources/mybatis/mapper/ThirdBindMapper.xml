@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.luno.softone.dao.ThirdBindMapper">
+
+    <resultMap type="com.luno.softone.model.entity.ThirdBindEntity" id="BaseResultMap">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="bindId" column="bind_id"/>
+        <result property="type" column="type"/>
+        <result property="lastLoginTime" column="last_login_time"/>
+        <result property="lastLoginIp" column="last_login_ip"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="status" column="status"/>
+        <result property="wxNickname" column="wx_nickname"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+	    `id`,
+	    `user_id`,
+	    `bind_id`,
+	    `type`,
+	    `last_login_time`,
+	    `last_login_ip`,
+	    `update_time`,
+	    `create_time`,
+	    status,
+	    wx_nickname
+  	</sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_third_bind
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from tb_third_bind
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from tb_third_bind where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <insert id="save" parameterType="com.luno.softone.model.entity.ThirdBindEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_third_bind
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                `user_id`,
+            </if>
+            <if test="bindId != null">
+                `bind_id`,
+            </if>
+            <if test="wxNickname != null">
+                `wx_nickname`,
+            </if>
+            <if test="type != null">
+                `type`,
+            </if>
+            <if test="lastLoginTime != null">
+                `last_login_time`,
+            </if>
+            <if test="lastLoginIp != null">
+                `last_login_ip`,
+            </if>
+            <if test="updateTime != null">
+                `update_time`,
+            </if>
+            <if test="createTime != null">
+                `create_time`
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="bindId != null">
+                #{bindId},
+            </if>
+            <if test="wxNickname != null">
+                #{wxNickname},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="lastLoginTime != null">
+                #{lastLoginTime},
+            </if>
+            <if test="lastLoginIp != null">
+                #{lastLoginIp},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime},
+            </if>
+            <if test="createTime != null">
+                #{createTime}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.luno.softone.model.entity.ThirdBindEntity">
+        update tb_third_bind
+        <set>
+            <if test="userId != null">
+                `user_id` = #{userId},
+            </if>
+            <if test="bindId != null">
+                `bind_id` = #{bindId},
+            </if>
+            <if test="wxNickname != null">
+                `wx_nickname` = #{wxNickname},
+            </if>
+            <if test="type != null">
+                `type` = #{type},
+            </if>
+            <if test="lastLoginTime != null">
+                `last_login_time` = #{lastLoginTime},
+            </if>
+            <if test="lastLoginIp != null">
+                `last_login_ip` = #{lastLoginIp},
+            </if>
+            <if test="updateTime != null">
+                `update_time` = #{updateTime},
+            </if>
+            <if test="createTime != null">
+                `create_time` = #{createTime},
+            </if>
+            <if test="status != null">
+                `status` = #{status}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="queryList" resultType="com.luno.softone.model.entity.ThirdBindEntity">
+        select
+        `id`,
+        `user_id`,
+        `bind_id`,
+        `type`,
+        `last_login_time`,
+        `last_login_ip`,
+        `update_time`,
+        `create_time`,
+        wx_nickname
+        from tb_third_bind
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from tb_third_bind
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+    <select id="queryByBindId" resultType="com.luno.softone.model.entity.ThirdBindEntity" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM tb_third_bind
+        WHERE bind_id = #{value}
+    </select>
+    <select id="queryByUserId" resultType="com.luno.softone.model.entity.ThirdBindEntity" parameterType="java.lang.Long">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM tb_third_bind
+        WHERE user_id = #{value}
+    </select>
+    <update id="unbindThirdBind" parameterType="java.lang.Long">
+        UPDATE tb_third_bind
+        SET `status` = 0
+        WHERE
+            `status` = 1
+        AND user_id = #{value}
+    </update>
+    <select id="queryThirdBindList" resultType="com.luno.softone.model.vo.QueryThirdBindVo">
+        SELECT
+        ttb.user_id,
+        ttb.bind_id,
+        ttb.last_login_time,
+        ss.`staff_id`,
+        ss.`name`,
+        ss.`sex`,
+        ss.`address`,
+        ss.`dpm_name`,
+        ss.`posting_name`,
+        ss.`work_phone`,
+        ss.`mobile_phone`,
+        ss.`edu`,
+        ss.`picture`,
+        ss.`on_board_time`,
+        ss.`email`,
+        ss.`status`,
+        ss.`create_time`,
+        ss.`remark`,
+        ss.`job_level`,
+        ss.`adm_level`
+        FROM
+        tb_third_bind ttb
+        INNER JOIN sys_user su ON ttb.user_id = su.user_id
+        INNER JOIN sys_staff ss ON su.staff_id = ss.staff_id
+        WHERE
+        ttb.`status` = 1
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+    <select id="queryThirdBindTotal" resultType="java.lang.Integer">
+        SELECT
+        COUNT(1)
+        FROM
+        tb_third_bind ttb
+        INNER JOIN sys_user su ON ttb.user_id = su.user_id
+        INNER JOIN sys_staff ss ON su.staff_id = ss.staff_id
+        WHERE
+        ttb.`status` = 1
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+    <select id="queryValidByNickname" resultType="com.luno.softone.model.entity.ThirdBindEntity">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_third_bind
+        where
+        create_time &gt; #{startDate}
+        <if test="nickName != null and nickName != ''">
+            AND wx_nickname LIKE CONCAT('%', #{nickName}, '%')
+        </if>
+    </select>
+    <delete id="deleteInvalid">
+        DELETE FROM tb_third_bind WHERE create_time &lt; DATE_SUB(NOW(), interval 30 minute)
+    </delete>
+    <delete id="deleteByOpenId" parameterType="java.lang.String">
+        DELETE FROM tb_third_bind WHERE bind_id = #{value}
+    </delete>
+</mapper>

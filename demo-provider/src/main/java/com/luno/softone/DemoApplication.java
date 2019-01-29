@@ -3,8 +3,10 @@ package com.luno.softone;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication
+@MapperScan("com.luno.softone.dao")
 public class DemoApplication {
 
 	private static ConfigurableApplicationContext context;

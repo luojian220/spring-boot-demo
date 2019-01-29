@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.luno.softone.dao.MsgSheduleDao">
+
+    <select id="queryList" resultType="com.luno.softone.model.entity.CaseModifyRecordEntity" parameterType="map">
+		SELECT * FROM case_modify_record t
+		WHERE cmr_type =#{cmrType}
+		<if test="ncAddTimeSt != null">
+        	AND t.cmr_create_time &gt;= #{ncAddTimeSt}
+         </if>
+         <if test="ncAddTimeEnd != null">
+        	AND t.cmr_create_time &lt;= #{ncAddTimeEnd}
+         </if>
+		order by t.cmr_create_time
+	</select>
+	
+	<!-- 调度未处理的案件 -->
+	<select id="queryDelayList" resultType="com.luno.softone.model.entity.CaseModifyRecordEntity" parameterType="map">
+	 select nc.nc_cu_id cmrCuId,cd.cd_id cmrDispatchId 
+	 from new_case nc inner join case_dispatch cd
+	  on nc.nc_id = cd.cd_nc_id and cd.cd_dispatch_state = 1 
+	 where nc.nc_case_state = 3 and cd.cd_task_time &lt;= date_sub(now() ,interval 2 DAY)
+	 </select>
+
+<select id="queryDelayDispList" resultType="com.luno.softone.model.entity.NewCaseEntity" parameterType="map">
+	 select   `nc_cu_name` ncCuName, `nc_task_time` ncTaskTime, cu_market_emp_id ncAddEmpId
+		from new_case inner join customer on new_case.nc_cu_id = customer.cu_id 
+		WHERE   nc_case_state in ( 0 , 1)   AND nc_task_time &lt;= date_sub(now() ,interval 2 DAY)
+	 </select>
+
+<!--     <select id="queryMark" resultType="com.sykj.common.dto.MsgSheduleCustomerDto">
+		SELECT c.*,nc.nc_number FROM customer c INNER JOIN new_case nc on c.cu_id=nc.nc_cu_id
+		where nc.nc_id=#{ncId}
+	</select> -->
+
+<!--     <update id="updateByNcId" parameterType="com.luno.softone.model.entity.CaseModifyRecordEntity">
+		update case_modify_record set cmr_msg_id=#{cmrMsgId},cmr_is_msg=#{cmrIsMsg} where cmr_id=#{cmrId}
+	</update> -->
+
+<!--     <select id="queryDis" resultType="com.sykj.common.dto.DispatchDto">
+		select cd.cd_multi_task,cd.cd_aidance,cd.cd_nc_id from  case_dispatch cd
+		INNER JOIN case_modify_record cmr on cd.cd_nc_id=cmr.cmr_nc_id
+		where cd.cd_nc_id=#{cdNcId}
+		GROUP BY cd.cd_multi_task,cd.cd_aidance,cd.cd_nc_id
+	</select> -->
+
+    <select id="queryCto" resultType="com.luno.softone.model.entity.SysStaffEntity">
+	  select s.staff_id from sys_staff s 
+		LEFT JOIN sys_user su on s.staff_id=su.staff_id
+		LEFT JOIN sys_user_role sur on sur.user_id=su.user_id
+		where su.`status`='1'
+		   and sur.role_id=#{roleId}
+	</select>
+	
+	<select id="queryStaffIdList" resultType="com.luno.softone.model.entity.SysStaffEntity">
+	  select s.staff_id from sys_staff s 
+		LEFT JOIN sys_user su on s.staff_id=su.staff_id
+		LEFT JOIN sys_user_role sur on sur.user_id=su.user_id
+		where su.`status`='1'
+		   and sur.role_id in 
+		   <foreach item="roleIds" collection="array" open="(" separator="," close=")">
+            #{roleIds}
+        </foreach>
+	</select>
+</mapper>

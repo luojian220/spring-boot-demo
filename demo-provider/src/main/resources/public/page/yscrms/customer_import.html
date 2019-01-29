@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>导入客户信息</title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <Row :gutter="16">
+            <div class="search-group">
+
+                <i-col span="4">
+                    <Upload
+                            ref="upload"
+                            name="file"
+                            :max-size="2048"
+                            :on-format-error="handleFormatError"
+                            :on-exceeded-size="handleMaxSize"
+                            :on-success="handleSuccess"
+                            :on-error="handleError"
+                            action="../customer/importCustomer"
+                            :format="['xsl','xlsx']"
+                            :max-size="2048">
+                        <i-button icon="ios-cloud-upload-outline" type="success">选择上传文件</i-button>
+                    </Upload>
+                    <div v-if="file !== null">即将上传文件: {{ file.name }} <i-button type="info" @click="upload" :loading="loadingStatus">{{ loadingStatus ? '上传中' : '上传' }}</i-button></div>
+                </i-col>
+                
+                <i-col span="1">
+                    <div>
+                        <a class="ivu-btn ivu-btn-success" href="${rc.contextPath}/js/excel/客户信息导入模板-v3.xlsx">模板下载</a>
+                    </div>
+                </i-col>
+            </div>
+            <!--
+            :before-upload="handleUpload"
+            :on-success="handleSuccess"
+            :before-upload="handleUpload"-->
+            <!--<div class="buttons-group">
+                <i-button type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
+            </div>-->
+        </Row>
+    </div>
+    <Card v-show="data1.length > 0">
+        <p slot="title">导入数据</p>
+        <i-table stripe :columns="columns1" :data="data1"></i-table>
+    </Card>
+</div>
+
+<script src="${rc.contextPath}/js/yscrms/customer_import.js?v=${jsVersion}"></script>
+</body>
+</html>
+ #parse("sys/foot.html")

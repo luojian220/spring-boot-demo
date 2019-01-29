@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <title>个人信息</title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp">
+    <Card>
+        <p slot="title">个人信息</p>
+        <i-form ref="formAdd" :model="user" :label-width="80">
+            <Row>
+                <i-col span="20">
+                    <Form-item label="编号">
+                        <i-input style="width:150px" v-model="user.staffId" placeholder="编号"/>
+                    </Form-item>
+                </i-col>
+                <i-col span="20">
+                    <Form-item label="用户名" >
+                        <i-input style="width:150px" v-model="user.username"/>
+                    </Form-item>
+                </i-col>
+                <i-col>
+                    <img v-bind:src="user.picUrl" style="width: 120px;height: 120px;border:1px solid #F00"/>
+                </i-col>
+            </Row>
+            <Form-item label="所属部门">
+                <i-input style="width:150px" v-model="user.deptName" readonly="readonly"/>
+            </Form-item>
+
+            <Form-item label="员工选择">
+                <i-input style="width:150px" v-model="user.staffName" readonly="readonly"/>
+            </Form-item>
+
+            <Form-item label="微信绑定">
+                <i-input style="width:150px" v-model="user.wxNickname" readonly="readonly"/>
+            </Form-item>
+
+           <!-- <Form-item label="角色">
+                <i-input style="width:350px" v-model="user.roleName" readonly="readonly"/>
+            </Form-item>-->
+             <Form-item label="状态" v-if="user.status == 0">
+                 <label>禁用</label>
+           </Form-item>
+            <Form-item label="状态" v-else-if="user.status == 1">
+                <label>正常</label>
+            </Form-item>
+
+        </i-form>
+
+    </Card>
+</div>
+<script src="${rc.contextPath}/js/sys/me.js?v=${jsVersion}"></script>
+</body>
+</html>

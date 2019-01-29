@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.luno.softone.dao.SysMsgDao">
+
+    <select id="queryObject" resultType="com.luno.softone.model.entity.SysMsgEntity">
+        select
+        `sm_id`,
+	    `sm_title`,
+	    `sm_content`,
+	    `sm_publish_time`,
+	    `sm_add_time`,
+	    `sm_staff_id`,
+	    `sm_state`,
+	    `sm_is_read`,
+	    `sm_type`,
+	    `sm_read_time`
+        from sys_msg
+        where sm_id = #{smId}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from sys_msg where sm_id = #{smId}
+    </delete>
+    
+    <delete id="deleteOverTime">
+        delete from sys_msg where sm_add_time &lt;= date_sub(now(),interval 15 DAY)
+    </delete>
+    
+    <delete id="updateReadOverTime">
+       <!--  delete from sys_msg where sm_add_time &lt;= date_sub(now(),interval 5 DAY) -->
+       update  sys_msg set sm_is_read=1,sm_read_time=now() where sm_add_time &lt;= date_sub(now(),interval 3 DAY)
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from sys_msg where sm_id in
+        <foreach item="smId" collection="array" open="(" separator="," close=")">
+            #{smId}
+        </foreach>
+    </delete>
+
+    <insert id="save" parameterType="com.luno.softone.model.entity.SysMsgEntity" useGeneratedKeys="true" keyProperty="smId">
+		insert into sys_msg(
+          `sm_title`,
+          `sm_content`,
+          `sm_publish_time`,
+          `sm_add_time`,
+          `sm_staff_id`,
+          `sm_state`,
+          `sm_is_read`,
+          `sm_type`,
+          `sm_read_time`
+          )
+		values(
+          #{smTitle},
+          #{smContent},
+          #{smPublishTime},
+          #{smAddTime},
+          #{smStaffId},
+          #{smState},
+          #{smIsRead},
+          #{smType},
+          #{smReadTime})
+	</insert>
+
+    <update id="update" parameterType="com.luno.softone.model.entity.SysMsgEntity">
+        update sys_msg
+        <set>
+            <if test="smTitle != null">
+                `sm_title` = #{smTitle},
+            </if>
+            <if test="smContent != null">
+                `sm_content` = #{smContent},
+            </if>
+            <if test="smPublishTime != null">
+                `sm_publish_time` = #{smPublishTime},
+            </if>
+            <if test="smAddTime != null">
+                `sm_add_time` = #{smAddTime},
+            </if>
+            <if test="smStaffId != null">
+                `sm_staff_id` = #{smStaffId},
+            </if>
+            <if test="smState != null">
+                `sm_state` = #{smState},
+            </if>
+            <if test="smIsRead != null">
+                `sm_is_read` = #{smIsRead},
+            </if>
+            <if test="smType != null">
+                `sm_type` = #{smType},
+            </if>
+            <if test="smReadTime != null">
+                `sm_read_time` = #{smReadTime}
+            </if>
+        </set>
+        where sm_id = #{smId}
+    </update>
+
+    <update id="updateBatch">
+        update sys_msg set `sm_state` =3 where sm_id in
+        <foreach item="smId" collection="array" open="(" separator="," close=")">
+            #{smId}
+        </foreach>
+    </update>
+
+    <select id="queryList" resultType="com.luno.softone.model.entity.SysMsgEntity">
+        select
+        `sm_id`,
+        `sm_title`,
+        `sm_content`,
+        `sm_publish_time`,
+        `sm_add_time`,
+        `sm_staff_id`,
+        `sm_state`,
+        `sm_is_read`,
+        `sm_type`,
+        `sm_read_time`,
+        (
+        SELECT
+        s.`name`
+        FROM
+        sys_staff s
+        WHERE
+        s.staff_id = sm_staff_id
+        ) staffName
+        from sys_msg
+        WHERE  <![CDATA[ sm_state <> '3' ]]>
+        <if test="smTitle != null and smTitle.trim() != ''">
+            AND sm_title LIKE concat('%',#{smTitle},'%')
+        </if>
+        <if test="smIsRead != null">
+            AND sm_is_read = #{smIsRead}
+        </if>
+        <if test="smStaffId != null and smStaffId.trim() != ''">
+            AND sm_staff_id = #{smStaffId}
+        </if>
+        <if test="smContent != null and smContent.trim() != ''">
+            AND sm_content LIKE concat('%',#{smContent},'%')
+        </if>
+
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by sm_publish_time desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(1) from sys_msg
+        WHERE  <![CDATA[ sm_state <> '3' ]]>
+        <if test="smTitle != null and smTitle.trim() != ''">
+            AND sm_title LIKE concat('%',#{smTitle},'%')
+        </if>
+        <if test="smIsRead != null">
+            AND sm_is_read = #{smIsRead}
+        </if>
+        <if test="smStaffId != null and smStaffId.trim() != ''">
+            AND sm_staff_id = #{smStaffId}
+        </if>
+        <if test="smContent != null and smContent.trim() != ''">
+            AND sm_content LIKE concat('%',#{smContent},'%')
+        </if>
+    </select>
+</mapper>

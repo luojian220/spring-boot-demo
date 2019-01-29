@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.luno.softone.dao.SysUserDao">
+
+    <resultMap type="com.luno.softone.model.entity.SysUserEntity" id="BaseResultMap">
+        <result property="userId" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="email" column="email"/>
+        <result property="mobile" column="mobile"/>
+        <result property="status" column="status"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="deptId" column="dept_id"/>
+        <result property="staffId" column="staff_id"/>
+        <result property="openId" column="open_id"/>
+        <result property="wxNickname" column="wx_nickname"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        `user_id`,
+        `username`,
+        `password`,
+        `email`,
+        `mobile`,
+        `status`,
+        `create_user_id`,
+        `create_time`,
+        `dept_id`,
+        `staff_id`,
+        open_id,
+        wx_nickname
+    </sql>
+
+    <select id="queryObject" resultType="com.luno.softone.model.entity.SysUserEntity">
+       select  u.`user_id`,
+        u.`username`,
+        u.`password`,
+        s.`email` email,
+        s.mobile_phone `mobile`,
+        u.`status`,
+        u.`create_user_id`,
+        u.`create_time`,
+        sd.dept_id deptId,
+        s.`staff_id` staffId,
+        u.open_id,
+        u.wx_nickname, 
+		s.name staffName,
+		s.dpm_name deptName
+		from sys_user u,sys_staff s,`sys_dept` sd 
+		where  s.staff_id = u.staff_id 
+		and s.dpm_name=sd.name 
+        and u.user_id =#{value}
+	</select>
+
+    <select id="queryList" resultType="com.luno.softone.model.entity.SysUserEntity">
+        select  u.`user_id`,
+        u.`username`,
+        u.`password`,
+        s.`email` email,
+        s.mobile_phone `mobile`,
+        u.`status`,
+        u.`create_user_id`,
+        u.`create_time`,
+        sd.dept_id deptId,
+        s.`staff_id` staffId,
+        u.open_id,
+        u.wx_nickname, 
+		s.name staffName,
+		s.dpm_name deptName
+		from sys_user u,sys_staff s,`sys_dept` sd 
+		where  s.staff_id = u.staff_id 
+		and s.dpm_name=sd.name 
+        <where>
+            <if test="status != null">
+                u.`status` = #{status}
+            </if>
+            <if test="createUserId != null">
+                and u.`create_user_id` = #{createUserId}
+            </if>
+            <if test="username != null and username.trim() != ''">
+                and u.`username` like concat('%',#{username},'%')
+            </if>
+        </where>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by u.user_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryListByBean" resultType="com.luno.softone.model.entity.UserWindowDto">
+        select
+        id,username name,dept_Id
+        from sys_user
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND username LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from sys_user
+        <where>
+            <if test="createUserId != null">
+                and `create_user_id` = #{createUserId}
+            </if>
+            <if test="username != null and username.trim() != ''">
+                and `username` like concat('%',#{username},'%')
+            </if>
+            <if test="status != null and status.trim() != ''">
+                and `status` = #{status}
+            </if>
+        </where>
+    </select>
+
+    <!-- 查询用户的所有权限 -->
+    <select id="queryAllPerms" resultType="string">
+		select m.perms from sys_user_role ur 
+			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id 
+			LEFT JOIN sys_menu m on rm.menu_id = m.menu_id 
+		where ur.user_id = #{userId}
+	</select>
+
+    <!-- 查询用户的所有菜单ID -->
+    <select id="queryAllMenuId" resultType="long">
+		select distinct rm.menu_id from sys_user_role ur 
+			LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id 
+		where ur.user_id = #{userId}
+	</select>
+
+    <!-- 查询用户的所有微信菜单ID -->
+    <select id="queryAllWeixinMenuId" resultType="long">
+		select distinct rm.menu_id from sys_user_role ur
+			LEFT JOIN sys_weixin_role_menu rm on ur.role_id = rm.role_id
+		where ur.user_id = #{userId}
+	</select>
+
+    <select id="queryByUserName" resultType="com.luno.softone.model.entity.SysUserEntity">
+<!-- 		select *,(
+            SELECT
+                s. NAME
+            FROM
+                sys_staff s
+            WHERE
+                s.staff_id = u.staff_id
+        ) staffName from sys_user u where username = #{username} -->
+        
+        select  u.`user_id`,
+        u.`username`,
+        u.`password`,
+        s.`email` email,
+        s.mobile_phone `mobile`,
+        u.`status`,
+        u.`create_user_id`,
+        u.`create_time`,
+        sd.dept_id deptId,
+        s.`staff_id` staffId,
+        u.open_id,
+        u.wx_nickname, 
+		s.name staffName,
+		s.dpm_name deptName
+		from sys_user u,sys_staff s,`sys_dept` sd 
+		where  s.staff_id = u.staff_id 
+		and s.dpm_name=sd.name 
+		and username = #{username}
+
+	</select>
+
+    <insert id="save" parameterType="com.luno.softone.model.entity.SysUserEntity" useGeneratedKeys="true" keyProperty="userId">
+		insert into sys_user
+		(
+			`user_id`, 
+			`username`, 
+			`password`, 
+			`email`, 
+			`mobile`, 
+			`status`, 
+			`create_user_id`,
+			`dept_id`,
+			`create_time`,
+			`staff_id`,
+			open_id,
+        wx_nickname
+		)
+		values
+		(
+			#{userId}, 
+			#{username}, 
+			#{password}, 
+			#{email}, 
+			#{mobile}, 
+			#{status}, 
+			#{createUserId},
+			#{deptId},
+			#{createTime},
+			#{staffId},
+			#{openId},
+			#{wxNickname}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.luno.softone.model.entity.SysUserEntity">
+        update sys_user
+        <set>
+            <if test="username != null">`username` = #{username},</if>
+            <if test="email != null">`email` = #{email},</if>
+            <if test="mobile != null">`mobile` = #{mobile},</if>
+            <if test="status != null">`status` = #{status},</if>
+            <if test="deptId != null">`dept_id` = #{deptId},</if>
+            <if test="staffId != null">`staff_id` = #{staffId},</if>
+            <if test="wxNickname != null">`wx_nickname` = #{wxNickname},</if>
+            <if test="openId != null">`open_id` = #{openId},</if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
+    <update id="updatePassword" parameterType="map">
+		update sys_user set `password` = #{newPassword} 
+			where user_id = #{userId} and password = #{password}
+	</update>
+
+    <delete id="deleteBatch">
+        delete from sys_user where user_id in
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+        ;
+        delete from sys_user_role where user_id in
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+    <select id="queryByOpenId" resultType="com.luno.softone.model.entity.SysUserEntity">
+        select  
+        u.`user_id`,
+        u.`username`,
+        u.`password`,
+        s.`email` email,
+        s.mobile_phone `mobile`,
+        u.`status`,
+        u.`create_user_id`,
+        u.`create_time`,
+        sd.dept_id deptId,
+        s.`staff_id` staffId,
+        u.open_id,
+        u.wx_nickname, 
+		s.name staffName,
+		s.dpm_name deptName,
+		s.picture picture
+		from sys_user u,sys_staff s,`sys_dept` sd 
+		where  s.staff_id = u.staff_id 
+		and s.dpm_name=sd.name 
+        and open_id = #{value}
+    </select>
+    <update id="updateOpenId">
+        UPDATE sys_user
+        SET open_id = #{openId},
+         wx_nickname = #{wxNickname}
+        WHERE
+            user_id = #{userId}
+    </update>
+
+    <update id="resetBatch">
+        update sys_user set `password` = #{password}
+        where user_id in
+        <foreach item="userId" collection="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </update>
+
+    <select id="queryDetail" resultType="com.luno.softone.model.entity.SysUserEntity">
+       SELECT
+       u.*,
+       s. NAME staffName,
+       d.`name` as deptName,
+       case s.picture
+			 when '' then 'head.gif'
+			 when NULL then 'head.gif'
+			 ELSE s.picture end as picture
+       FROM sys_user u
+       LEFT JOIN sys_staff s ON u.staff_id = s.staff_id
+       LEFT JOIN sys_dept d on s.dpm_name=d.name 
+       WHERE u.user_id =#{userId}
+	</select>
+
+    <update id="quitBatch">
+        update sys_user set status=0,open_id=null,wx_nickname=null where staff_id in
+        <foreach item="staffId" collection="array" open="(" separator="," close=")">
+            #{staffId}
+        </foreach>
+    </update>
+</mapper>

@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.luno.softone.dao.SysStaffDao">
+
+    <resultMap type="com.luno.softone.model.entity.SysStaffEntity" id="BaseResultMap">
+        <result property="staffId" column="staff_id"/>
+        <result property="name" column="name"/>
+        <result property="sex" column="sex"/>
+        <result property="address" column="address"/>
+        <result property="dpmName" column="dpm_name"/>
+        <result property="postingName" column="posting_name"/>
+        <result property="workPhone" column="work_phone"/>
+        <result property="mobilePhone" column="mobile_phone"/>
+        <result property="edu" column="edu"/>
+        <result property="picture" column="picture"/>
+        <result property="onBoardTime" column="on_board_time"/>
+        <result property="email" column="email"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="remark" column="remark"/>
+        <result property="jobLevel" column="job_level"/>
+        <result property="admLevel" column="adm_level"/>
+    </resultMap>
+
+    <select id="queryObject" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        `staff_id`,
+	    `name`,
+	    `sex`,
+	    `address`,
+	    `dpm_name`,
+	    `posting_name`,
+	    `work_phone`,
+	    `mobile_phone`,
+	    `edu`,
+	    `picture`,
+	    `on_board_time`,
+	    `email`,
+	    `status`,
+	    `create_time`,
+	    `remark`,
+	    `job_level`,
+	    `adm_level`
+        from sys_staff
+        where staff_id = #{staffId} and status='1'
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from sys_staff where staff_id = #{staff_id}
+    </delete>
+
+
+    <update id="deleteBatch">
+        update sys_staff set status='2' where staff_id in
+        <foreach item="staffId" collection="array" open="(" separator="," close=")">
+            #{staffId}
+        </foreach>
+    </update>
+
+    <insert id="saveOrUpdate" parameterType="com.luno.softone.model.entity.SysStaffEntity">
+        <selectKey keyProperty="count" resultType="int" order="BEFORE">
+            select count(*) from sys_staff where staff_id = #{staffId}
+        </selectKey>
+        <if test="count > 0">
+            update sys_staff
+            <set>
+                <if test="name != null">
+                    `name` = #{name},
+                </if>
+                <if test="sex != null">
+                    `sex` = #{sex},
+                </if>
+                <if test="address != null">
+                    `address` = #{address},
+                </if>
+                <if test="dpmName != null">
+                    `dpm_name` = #{dpmName},
+                </if>
+                <if test="postingName != null">
+                    `posting_name` = #{postingName},
+                </if>
+                <if test="workPhone != null">
+                    `work_phone` = #{workPhone},
+                </if>
+                <if test="mobilePhone != null">
+                    `mobile_phone` = #{mobilePhone},
+                </if>
+                <if test="edu != null">
+                    `edu` = #{edu},
+                </if>
+                <if test="picture != null">
+                    `picture` = #{picture},
+                </if>
+                <if test="onBoardTime != null">
+                    `on_board_time` = #{onBoardTime},
+                </if>
+                <if test="email != null">
+                    `email` = #{email},
+                </if>
+                <if test="status != null">
+                    `status` = #{status},
+                </if>
+                <if test="createTime != null">
+                    `create_time` = #{createTime},
+                </if>
+                <if test="remark != null">
+                    `remark` = #{remark},
+                </if>
+                <if test="jobLevel != null">
+                    `job_level` = #{jobLevel},
+                </if>
+                <if test="admLevel != null">
+                    `adm_level` = #{admLevel}
+                </if>
+            </set>
+            where staff_id = #{staffId}
+        </if>
+
+        <if test="count==0">
+            insert into sys_staff(
+            `staff_id`,
+            `name`,
+            `sex`,
+            `address`,
+            `dpm_name`,
+            `posting_name`,
+            `work_phone`,
+            `mobile_phone`,
+            `edu`,
+            `picture`,
+            `on_board_time`,
+            `email`,
+            `status`,
+            `create_time`,
+            `remark`,
+            `job_level`,
+            `adm_level` )
+            values(
+            #{staffId},
+            #{name},
+            #{sex},
+            #{address},
+            #{dpmName},
+            #{postingName},
+            #{workPhone},
+            #{mobilePhone},
+            #{edu},
+            #{picture},
+            #{onBoardTime},
+            #{email},
+            #{status},
+            #{createTime},
+            #{remark},
+            #{jobLevel},
+            #{admLevel} )
+        </if>
+    </insert>
+
+    <insert id="save" parameterType="com.luno.softone.model.entity.SysStaffEntity">
+		insert into sys_staff(
+          `staff_id`,
+          `name`,
+          `sex`,
+          `address`,
+          `dpm_name`,
+          `posting_name`,
+          `work_phone`,
+          `mobile_phone`,
+          `edu`,
+          `picture`,
+          `on_board_time`,
+          `email`,
+          `status`,
+          `create_time`,
+          `remark`,
+          `job_level`,
+          `adm_level`        )
+		values(
+          #{staffId},
+          #{name},
+          #{sex},
+          #{address},
+          #{dpmName},
+          #{postingName},
+          #{workPhone},
+          #{mobilePhone},
+          #{edu},
+          #{picture},
+          #{onBoardTime},
+          #{email},
+          #{status},
+          #{createTime},
+          #{remark},
+          #{jobLevel},
+          #{admLevel}         )
+	</insert>
+
+    <update id="update" parameterType="com.luno.softone.model.entity.SysStaffEntity">
+        update sys_staff
+        <set>
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="sex != null">
+                `sex` = #{sex},
+            </if>
+            <if test="address != null">
+                `address` = #{address},
+            </if>
+            <if test="dpmName != null">
+                `dpm_name` = #{dpmName},
+            </if>
+            <if test="postingName != null">
+                `posting_name` = #{postingName},
+            </if>
+            <if test="workPhone != null">
+                `work_phone` = #{workPhone},
+            </if>
+            <if test="mobilePhone != null">
+                `mobile_phone` = #{mobilePhone},
+            </if>
+            <if test="edu != null">
+                `edu` = #{edu},
+            </if>
+            <if test="picture != null">
+                `picture` = #{picture},
+            </if>
+            <if test="onBoardTime != null">
+                `on_board_time` = #{onBoardTime},
+            </if>
+            <if test="email != null">
+                `email` = #{email},
+            </if>
+            <if test="status != null">
+                `status` = #{status},
+            </if>
+            <if test="createTime != null">
+                `create_time` = #{createTime},
+            </if>
+            <if test="remark != null">
+                `remark` = #{remark},
+            </if>
+            <if test="jobLevel != null">
+                `job_level` = #{jobLevel},
+            </if>
+            <if test="admLevel != null">
+                `adm_level` = #{admLevel}
+            </if>
+        </set>
+        where staff_id = #{staffId}
+    </update>
+
+    <!-- 用户表使用 -->
+    <select id="queryList" resultType="com.luno.softone.model.entity.SysStaffEntity">
+        select
+        a.`staff_id`,
+        a.`name`,
+        a.`sex`,
+        a.`address`,
+        a.`dpm_name`,
+        a.`posting_name`,
+        a.`work_phone`,
+        a.`mobile_phone`,
+        a.`edu`,
+        a.`picture`,
+        a.`on_board_time`,
+        a.`email`,
+        a.`status`,
+        a.`create_time`,
+        a.`remark`,
+        a.`job_level`,
+        a.`adm_level`
+        from sys_staff a
+        WHERE status='1'
+        <!--         <if test="status != null">
+                    `status` = #{status}
+                </if> -->
+        <choose>
+            <when test="staffId != null and staffId.trim() != ''">
+                and EXISTS (
+            </when>
+            <otherwise>
+                and NOT EXISTS (
+            </otherwise>
+        </choose>
+        SELECT
+        *
+        FROM
+        sys_user b
+        WHERE
+        b.staff_id = a.staff_id
+        <if test="staffId != null and staffId.trim() != ''">
+            AND a.staff_id = #{staffId}
+        </if>
+        )
+        <if test="name != null and name.trim() != ''">
+            AND a.name LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by staff_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from sys_staff
+        WHERE 1=1
+        <if test="status != null and status.trim() != ''">
+            AND status =#{status}
+        </if>
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+
+    <!-- 下拉框使用 -->
+    <select id="queryListAll" resultType="com.luno.softone.model.entity.SysStaffEntity">
+        select
+        a.`staff_id`,
+        a.`name`,
+        a.`sex`,
+        a.`address`,
+        a.`dpm_name`,
+        a.`posting_name`,
+        a.`work_phone`,
+        a.`mobile_phone`,
+        a.`edu`,
+        a.`picture`,
+        a.`on_board_time`,
+        a.`email`,
+        a.`status`,
+        a.`create_time`,
+        a.`remark`,
+        a.`job_level`,
+        a.`adm_level`
+        from sys_staff a
+        WHERE status='1' and a.`dpm_name` in('技术部','工程部')
+        <if test="name != null and name.trim() != ''">
+            AND a.name LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by convert(dpm_name using gbk) desc,convert(name using gbk)
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+    <!-- 销售下拉框使用 -->
+    <select id="queryListAllByDep" resultType="com.luno.softone.model.entity.SysStaffEntity">
+        select
+        a.`staff_id`,
+        a.`name`,
+        a.`sex`,
+        a.`address`,
+        a.`dpm_name`,
+        a.`posting_name`,
+        a.`work_phone`,
+        a.`mobile_phone`,
+        a.`edu`,
+        a.`picture`,
+        a.`on_board_time`,
+        a.`email`,
+        a.`status`,
+        a.`create_time`,
+        a.`remark`,
+        a.`job_level`,
+        a.`adm_level`
+        from sys_staff a
+        WHERE status='1'
+        <if test="dpmName != null and dpmName.trim() != ''">
+            AND a.dpm_name =#{dpmName}
+        </if>
+        <if test="deptFilter != null">
+            AND a.dpm_name in(SELECT name FROM `sys_dept` where dept_id in (${deptFilter}) or parent_id in
+            (${deptFilter}))
+        </if>
+
+        <if test="name != null and name.trim() != ''">
+            AND a.name LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by dpm_name,convert(name using gbk)
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!-- 用户页面使用 -->
+    <select id="list" resultType="com.luno.softone.model.entity.SysStaffEntity">
+        SELECT
+        a.`staff_id`,
+        a.`name`,
+        a.`sex`,
+        a.`address`,
+        a.`dpm_name`,
+        a.`posting_name`,
+        a.`work_phone`,
+        a.`mobile_phone`,
+        a.`edu`,
+        a.`picture`,
+        a.`on_board_time`,
+        a.`email`,
+        a.`status`,
+        a.`create_time`,
+        a.`remark`,
+        (
+        SELECT
+        m.`name`
+        FROM
+        sys_macro m
+        WHERE
+        m.`value` = a.`job_level`
+        AND m.`status` = 1
+        AND m.parent_id = (
+        SELECT
+        id
+        FROM
+        sys_macro
+        WHERE
+        NAME = '员工职级'
+        )
+        ) `job_level`,
+        (
+        SELECT
+        m.`name`
+        FROM
+        sys_macro m
+        WHERE
+        m.`value` = a.`adm_level`
+        AND m.`status` = 1
+        AND m.parent_id = (
+        SELECT
+        id
+        FROM
+        sys_macro
+        WHERE
+        NAME = '行政级别'
+        )
+        ) `adm_level`
+        FROM
+        sys_staff a
+        WHERE 1=1
+        <if test="status != null and status.trim() != ''">
+            AND a.status =#{status}
+        </if>
+        <if test="name != null and name.trim() != ''">
+            AND a.name LIKE concat('%',#{name},'%')
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                <choose>
+                    <when test='tag != null and tag == "true"'>
+                        order by dpm_name,convert(name using gbk)
+                    </when>
+                    <otherwise>
+                        order by staff_id
+                    </otherwise>
+                </choose>
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!--     <select id="queryMaxId" resultType="java.lang.String">
+            select max(staff_id) from sys_staff
+        </select> -->
+
+    <update id="quitBatch">
+        update sys_staff set status='0' where staff_id in
+        <foreach item="staffId" collection="array" open="(" separator="," close=")">
+            #{staffId}
+        </foreach>
+    </update>
+
+    <!--统计使用-->
+    <select id="rptStaffList" resultType="com.luno.softone.model.entity.SysStaffEntity">
+    SELECT
+        s.`staff_id`,
+        s.`name`,
+        s.`sex`,
+        s.`address`,
+        s.`dpm_name`,
+        s.`posting_name`,
+        s.`work_phone`,
+        s.`mobile_phone`,
+        s.`edu`,
+        s.`picture`,
+        s.`on_board_time`,
+        s.`email`,
+        s.`status`,
+        s.`create_time`,
+        s.`remark`,
+        s.`job_level`,
+        s.`adm_level`
+    FROM sys_staff s
+    LEFT JOIN sys_user u ON s.staff_id = u.staff_id
+    LEFT JOIN sys_user_role r ON u.user_id = r.user_id
+    WHERE r.role_id = 29 OR r.role_id = 8
+</select>
+</mapper>
