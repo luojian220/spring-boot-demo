@@ -17,12 +17,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
-        <java.version>1.8</java.version>
-        <project.encoding>UTF-8</project.encoding>
-        <project.build.encoding>UTF-8</project.build.encoding>
-        <maven.staging.plugin>1.6.7</maven.staging.plugin>
-        <maven.compiler.plugin>2.3.2</maven.compiler.plugin>
-        <maven.war.plugin>3.0.0</maven.war.plugin>
     </properties>
 
     <dependencies>
@@ -77,11 +71,21 @@
             <version>2.0.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.luna.softone</groupId>
+            <artifactId>demo-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
         <!--redis -->
         <!--<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>-->
+
+
+        <!--以下依赖可以抽离到父pom中-->
+
 
     </dependencies>
 
