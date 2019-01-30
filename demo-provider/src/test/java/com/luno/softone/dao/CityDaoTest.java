@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @ClassName: CityDaoTest
  * @Reason: TODO ADD REASON(可选)
  * @date: 2019年01月28日 14:55
- * @company:宝尊电商
+
  * @since JDK 1.7
  */
 @RunWith(SpringRunner.class)

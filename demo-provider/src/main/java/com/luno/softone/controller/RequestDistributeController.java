@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @ClassName: RequestDistributeController
  * @Reason: TODO ADD REASON(可选)
  * @date: 2019年01月29日 11:21
- * @company:宝尊电商
+
  * @since JDK 1.7
  */
 @Controller

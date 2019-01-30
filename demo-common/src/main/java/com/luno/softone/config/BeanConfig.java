@@ -13,7 +13,7 @@ import java.util.Properties;
  * @ClassName: BeanConfig
  * @Reason: TODO ADD REASON(可选)
  * @date: 2019年01月29日 17:19
- * @company:宝尊电商
+
  * @since JDK 1.7
  */
 @Configuration

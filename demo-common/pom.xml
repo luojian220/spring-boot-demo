@@ -75,6 +75,7 @@
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
 
+        <!--shiro 安全组件-->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-core</artifactId>

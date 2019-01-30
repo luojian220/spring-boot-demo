@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @ClassName: InterceptorConfig
  * @Reason: TODO ADD REASON(可选)
  * @date: 2019年01月29日 14:30
- * @company:宝尊电商
+
  * @since JDK 1.7
  */
 @Configuration

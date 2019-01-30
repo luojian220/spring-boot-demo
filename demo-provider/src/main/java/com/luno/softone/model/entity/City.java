@@ -9,7 +9,6 @@ import javax.persistence.Table;
  * @ClassName: City
  * @Reason: TODO ADD REASON(可选)
  * @date: 2019年01月28日 14:45
- * @company:宝尊电商
  * @since JDK 1.7
  */
 @Table

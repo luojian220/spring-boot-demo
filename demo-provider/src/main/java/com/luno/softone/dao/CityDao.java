@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Param;
  * @ClassName: CityDao
  * @Reason: TODO ADD REASON(可选)
  * @date: 2019年01月28日 14:53
- * @company:宝尊电商
+
  * @since JDK 1.7
  */
 @Mapper

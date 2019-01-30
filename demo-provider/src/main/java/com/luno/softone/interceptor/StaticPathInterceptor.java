@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
  * @ClassName: StaticPathInterceptor
  * @Reason: TODO ADD REASON(可选)
  * @date: 2019年01月29日 14:20
- * @company:宝尊电商
+
  * @since JDK 1.7
  */
 public class StaticPathInterceptor implements HandlerInterceptor {

@@ -6,7 +6,7 @@ package com.luno.softone.utils;
  * @ClassName: RedisUtils
  * @Reason: TODO ADD REASON(可选)
  * @date: 2019年01月29日 16:24
- * @company:宝尊电商
+
  * @since JDK 1.7
  */
 public class RedisUtils {
