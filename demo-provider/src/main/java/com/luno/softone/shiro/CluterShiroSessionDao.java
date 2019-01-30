@@ -1,8 +1,11 @@
 package com.luno.softone.shiro;
 
 import com.luno.softone.utils.Constant;
+import com.luno.softone.utils.RedisService;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
@@ -12,7 +15,11 @@ import java.io.Serializable;
  * @author dcs
  * @date 2018年07月31日 上午14:50
  */
+@Component
 public class CluterShiroSessionDao extends EnterpriseCacheSessionDAO {
+
+    @Autowired
+    private RedisService redisService;
 
     @Override
     protected Serializable doCreate(Session session) {
@@ -45,18 +52,16 @@ public class CluterShiroSessionDao extends EnterpriseCacheSessionDAO {
         super.doDelete(session);
         final String key = Constant.SESSION_KEY + session.getId().toString();
 
-        //J2CacheUtils.remove(key);
+        redisService.remove(key);
     }
 
     private Session getShiroSession(String key) {
 
-        return (Session) new Object();
-        //return (Session) J2CacheUtils.get(key);
+        return (Session) redisService.get(key);
     }
 
     private void setShiroSession(String key, Session session) {
 
-
-        //J2CacheUtils.put(key, session);
+        redisService.set(key,session);
     }
 }

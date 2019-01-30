@@ -5,6 +5,7 @@ import com.luno.softone.dao.SysUserDao;
 import com.luno.softone.model.entity.SysMenuEntity;
 import com.luno.softone.model.entity.SysUserEntity;
 import com.luno.softone.utils.Constant;
+import com.luno.softone.utils.RedisService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -15,6 +16,7 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
@@ -24,11 +26,15 @@ import java.util.*;
  * @author dcs
  * @date 2017年11月19日 上午9:49:19
  */
+@Component
 public class UserRealm extends AuthorizingRealm {
     @Autowired
     private SysUserDao sysUserDao;
     @Autowired
     private SysMenuDao sysMenuDao;
+
+    @Autowired
+    private RedisService redisService;
 
     /**
      * 授权(验证权限时调用)
@@ -39,14 +45,15 @@ public class UserRealm extends AuthorizingRealm {
         Long userId = user.getUserId();
 
         // TODO: 2019/1/28 redis
-        List<String> permsList = new ArrayList<String>();//(List<String>) J2CacheUtils.get(Constant.PERMS_LIST + userId);
-
+        //List<String> permsList = (List<String>) J2CacheUtils.get(Constant.PERMS_LIST + userId);
+        List<String> permsList = (List<String>)redisService.get(Constant.PERMS_LIST + userId);
         //用户权限列表
         Set<String> permsSet = new HashSet<String>();
         if (permsList != null && permsList.size() != 0) {
         	//刷吧，没搞明白一级二级缓存的区别在哪，一级失效，二级也失效了，为什么？???
             // TODO: 2019/1/28 redis 
         	//J2CacheUtils.put(Constant.PERMS_LIST + user.getUserId(), permsList);
+            redisService.set(Constant.PERMS_LIST + user.getUserId(),permsList);
             for (String perms : permsList) {
                 if (StringUtils.isBlank(perms)) {
                     continue;
@@ -106,6 +113,7 @@ public class UserRealm extends AuthorizingRealm {
         }
         // TODO: 2019/1/29 redis
         //J2CacheUtils.put(Constant.PERMS_LIST + user.getUserId(), permsList);
+        redisService.set(Constant.PERMS_LIST + user.getUserId(),permsList);
 
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, getName());
         return info;
