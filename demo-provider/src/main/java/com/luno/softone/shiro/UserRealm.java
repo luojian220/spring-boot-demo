@@ -28,13 +28,17 @@ import java.util.*;
  */
 @Component
 public class UserRealm extends AuthorizingRealm {
-    @Autowired
-    private SysUserDao sysUserDao;
-    @Autowired
-    private SysMenuDao sysMenuDao;
+    private final SysUserDao sysUserDao;
+    private final SysMenuDao sysMenuDao;
+
+    private final RedisService redisService;
 
     @Autowired
-    private RedisService redisService;
+    public UserRealm(SysUserDao sysUserDao, SysMenuDao sysMenuDao, RedisService redisService) {
+        this.sysUserDao = sysUserDao;
+        this.sysMenuDao = sysMenuDao;
+        this.redisService = redisService;
+    }
 
     /**
      * 授权(验证权限时调用)
@@ -44,15 +48,11 @@ public class UserRealm extends AuthorizingRealm {
         SysUserEntity user = (SysUserEntity) principals.getPrimaryPrincipal();
         Long userId = user.getUserId();
 
-        // TODO: 2019/1/28 redis
-        //List<String> permsList = (List<String>) J2CacheUtils.get(Constant.PERMS_LIST + userId);
         List<String> permsList = (List<String>)redisService.get(Constant.PERMS_LIST + userId);
         //用户权限列表
         Set<String> permsSet = new HashSet<String>();
         if (permsList != null && permsList.size() != 0) {
         	//刷吧，没搞明白一级二级缓存的区别在哪，一级失效，二级也失效了，为什么？???
-            // TODO: 2019/1/28 redis 
-        	//J2CacheUtils.put(Constant.PERMS_LIST + user.getUserId(), permsList);
             redisService.set(Constant.PERMS_LIST + user.getUserId(),permsList);
             for (String perms : permsList) {
                 if (StringUtils.isBlank(perms)) {
@@ -103,20 +103,17 @@ public class UserRealm extends AuthorizingRealm {
 
         //系统管理员，拥有最高权限
         if (Constant.SUPER_ADMIN == user.getUserId()) {
-            List<SysMenuEntity> menuList = sysMenuDao.queryList(new HashMap<String, Object>());
-            permsList = new ArrayList<String>(menuList.size());
+            List<SysMenuEntity> menuList = sysMenuDao.queryList(new HashMap<>(32));
+            permsList = new ArrayList<>(menuList.size());
             for (SysMenuEntity menu : menuList) {
                 permsList.add(menu.getPerms());
             }
         } else {
             permsList = sysUserDao.queryAllPerms(user.getUserId());
         }
-        // TODO: 2019/1/29 redis
-        //J2CacheUtils.put(Constant.PERMS_LIST + user.getUserId(), permsList);
         redisService.set(Constant.PERMS_LIST + user.getUserId(),permsList);
 
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, getName());
-        return info;
+        return new SimpleAuthenticationInfo(user, password, getName());
     }
 
 }
