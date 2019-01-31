@@ -21,6 +21,11 @@ public class CluterShiroSessionDao extends EnterpriseCacheSessionDAO {
     @Autowired
     private RedisService redisService;
 
+    /**
+     * session 缓存时间
+     */
+    private static final long GLOBAL_SESSION_TIMEOUT = 1800000L;
+
     @Override
     protected Serializable doCreate(Session session) {
         Serializable sessionId = super.doCreate(session);
@@ -62,6 +67,6 @@ public class CluterShiroSessionDao extends EnterpriseCacheSessionDAO {
 
     private void setShiroSession(String key, Session session) {
 
-        redisService.set(key,session);
+        redisService.set(key,session,GLOBAL_SESSION_TIMEOUT);
     }
 }
