@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>案件报修统计明细</title>
+    <head th:replace="sys/header"></head>
+</head>
+
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <Row :gutter="16">
+            <div class="buttons-group">
+                <i-button type="info" @click="exportRpt"><i class="fa fa-cloud-download"></i>&nbsp;&nbsp;导出</i-button>
+            </div>
+        </Row>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+</div>
+
+<script src="${rc.contextPath}/js/yscrms/rpt_details.js?v=${jsVersion}"></script>
+</body>
+</html>

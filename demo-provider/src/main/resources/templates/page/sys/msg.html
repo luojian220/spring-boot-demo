@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>消息表</title>
+    <head th:replace="sys/header"></head>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <Row :gutter="16">
+            <div class="search-group">
+                <i-col span="4">
+                    <i-input v-model="q.smTitle" @on-enter="query" placeholder="标题"/>
+                </i-col>
+                <i-button @click="query">查询</i-button>
+            </div>
+            <div class="buttons-group">
+                #if($shiro.hasPermission("sys:msg:info"))
+                <i-button  type="info" @click="detail" >&nbsp;查看</i-button>
+                #end
+                #if($shiro.hasPermission("sys:msg:delete"))
+                <i-button type="error" @click="del" v-show="smIsRead!=0"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
+                #end
+            </div>
+        </Row>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+    <Card v-show="!showList">
+        <p slot="title">{{title}}</p>
+        <i-form ref="formValidate" :model="msg" :rules="ruleValidate" :label-width="80">
+            <Form-item label="标题" prop="smTitle">
+                <i-input v-model="msg.smTitle"/>
+            </Form-item>
+            <Form-item label="消息类型" prop="smType">
+                <i-input v-model="msg.smType" />
+            </Form-item>
+            <Form-item label="发布时间" prop="smPublishTime">
+                <i-input v-model="msg.smPublishTime"/>
+            </Form-item>
+            <Form-item label="内容" prop="smContent" readonly="readonly">
+                <i-input type="textarea" v-model="msg.smContent"/>
+            </Form-item>
+
+
+            <Form-item>
+                <i-button type="warning" @click="reload" style="margin-left: 8px"/>返回</i-button>
+            </Form-item>
+        </i-form>
+    </Card>
+</div>
+
+<script src="${rc.contextPath}/js/sys/msg.js?v=${jsVersion}"></script>
+</body>
+</html>

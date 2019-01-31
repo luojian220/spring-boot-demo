@@ -56,6 +56,7 @@ public class ShiroConfiguration {
         filterChainDefinitionMap.put("/statics/**", "anon");
         filterChainDefinitionMap.put("/sys/login", "anon");
         filterChainDefinitionMap.put("/captcha.jpg", "anon");
+        /*filterChainDefinitionMap.put("/page/**", "anon");*/
 
         //<!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
         //<!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
@@ -73,7 +74,7 @@ public class ShiroConfiguration {
     }
 
     @Bean
-    public SessionManager sessionManager(CluterShiroSessionDao cluterShiroSessionDao) {
+    public DefaultWebSessionManager sessionManager(CluterShiroSessionDao cluterShiroSessionDao) {
 
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setGlobalSessionTimeout(1800000L);
@@ -91,23 +92,5 @@ public class ShiroConfiguration {
         return securityManager;
     }
 
-
-
-    /**
-     * <bean id="cluterShiroSessionDao" class="com.sykj.common.shiro.CluterShiroSessionDao"/>
-     *
-     * 	<bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
-     * 		<!-- 设置session过期时间为1小时(单位：毫秒)，默认为30分钟 -->
-     * 		<property name="globalSessionTimeout" value="1800000"></property>
-     * 		<property name="sessionValidationSchedulerEnabled" value="true"></property>
-     * 		<property name="sessionIdUrlRewritingEnabled" value="false"></property>
-     *         <property name="sessionDAO" ref="cluterShiroSessionDao"/>
-     * 	</bean>
-     *
-     * 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-     * 		<property name="sessionManager" ref="sessionManager"></property>
-     * 	    <property name="realm" ref="userRealm"/>
-     * 	</bean>
-     */
 
 }

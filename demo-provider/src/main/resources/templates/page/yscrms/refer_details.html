@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>服务咨询记录列表</title>
+    <head th:replace="sys/header"></head>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <div v-show="showList">
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+
+</div>
+
+<script src="${rc.contextPath}/js/yscrms/refer_details.js?v=${jsVersion}"></script>
+</body>
+</html>
