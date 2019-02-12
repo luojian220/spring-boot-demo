@@ -24,7 +24,7 @@ public class CluterShiroSessionDao extends EnterpriseCacheSessionDAO {
     /**
      * session 缓存时间
      */
-    private static final long GLOBAL_SESSION_TIMEOUT = 1800000L;
+    private static final long GLOBAL_SESSION_TIMEOUT = 1800L;
 
     @Override
     protected Serializable doCreate(Session session) {
