@@ -1,13 +1,17 @@
 package com.luno.softone.shiro;
 
 import com.luno.softone.utils.Constant;
-import com.luno.softone.utils.RedisService;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 分布式session管理
@@ -18,8 +22,8 @@ import java.io.Serializable;
 @Component
 public class CluterShiroSessionDao extends EnterpriseCacheSessionDAO {
 
-    @Autowired
-    private RedisService redisService;
+    @Resource(name = "redisTemplate")
+    private RedisTemplate<String , Session> redisTemplate;
 
     /**
      * session 缓存时间
@@ -57,16 +61,18 @@ public class CluterShiroSessionDao extends EnterpriseCacheSessionDAO {
         super.doDelete(session);
         final String key = Constant.SESSION_KEY + session.getId().toString();
 
-        redisService.remove(key);
+        redisTemplate.delete(key);
     }
 
     private Session getShiroSession(String key) {
-
-        return (Session) redisService.get(key);
+        redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+        return redisTemplate.opsForValue().get(key);
     }
 
     private void setShiroSession(String key, Session session) {
 
-        redisService.set(key,session,GLOBAL_SESSION_TIMEOUT);
+        redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+        redisTemplate.opsForValue().set(key,session);
+        redisTemplate.expire(key,GLOBAL_SESSION_TIMEOUT, TimeUnit.SECONDS);
     }
 }
