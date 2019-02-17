@@ -4,9 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
+    <!-- 该配置文件作废 -->
+
     <settings>
-        <!-- 打印查询语句 -->
         <setting name="logImpl" value="STDOUT_LOGGING" />
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
     <!--     打印SQL只需要加一个setting就可以了。
         mybatis的日志打印方式比较多，SLF4J | LOG4J | LOG4J2 | JDK_LOGGING |

@@ -189,7 +189,9 @@
             password: '',
             newPassword: '',
             menuList: {},
-            user: {}
+            user: {},
+            version: '',
+            systemName: ''
         },
         methods: {
             getMenuList: function (event) {
@@ -200,6 +202,14 @@
             getUser: function () {
                 $.getJSON("sys/user/info?_" + $.now(), function (r) {
                     vm.user = r.user;
+                });
+            },
+            getConfig: function () {
+                $.getJSON("sys/config/info?_" + $.now(), function (r) {
+                    vm.version = r.version;
+                    vm.systemName = r.systemName;
+                    $(".sysinfo").html(vm.systemName+" 版本" +vm.version );
+                    $("title").html(vm.systemName);
                 });
             },
             updatePassword: function () {
@@ -262,6 +272,7 @@
         created: function () {
             this.getUser();
             this.getMenuList();
+            this.getConfig()
         },
         updated: function () {
             // MetsiMenu
