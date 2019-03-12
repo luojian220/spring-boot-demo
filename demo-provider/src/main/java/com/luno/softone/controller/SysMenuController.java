@@ -1,9 +1,13 @@
 package com.luno.softone.controller;
 
-import com.luno.softone.annotation.SysLog;
+import com.luno.softone.common.annotation.SysLog;
+import com.luno.softone.common.exception.RRException;
+import com.luno.softone.common.utils.Constant;
+import com.luno.softone.common.utils.PageUtils;
+import com.luno.softone.common.utils.Query;
+import com.luno.softone.common.utils.R;
 import com.luno.softone.model.entity.SysMenuEntity;
 import com.luno.softone.service.SysMenuService;
-import com.luno.softone.utils.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;

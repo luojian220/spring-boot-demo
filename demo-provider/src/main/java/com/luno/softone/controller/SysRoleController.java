@@ -1,16 +1,16 @@
 package com.luno.softone.controller;
 
 
-import com.luno.softone.annotation.SysLog;
+import com.luno.softone.common.annotation.SysLog;
 import com.luno.softone.model.entity.SysRoleEntity;
 import com.luno.softone.service.SysRoleDeptService;
 import com.luno.softone.service.SysRoleMenuService;
 import com.luno.softone.service.SysRoleService;
 import com.luno.softone.service.SysWeixinRoleMenuService;
-import com.luno.softone.utils.PageUtils;
-import com.luno.softone.utils.Query;
-import com.luno.softone.utils.R;
-import com.luno.softone.validator.ValidatorUtils;
+import com.luno.softone.common.utils.PageUtils;
+import com.luno.softone.common.utils.Query;
+import com.luno.softone.common.utils.R;
+import com.luno.softone.common.validator.ValidatorUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -4,7 +4,7 @@ package com.luno.softone.service;
 
 import com.luno.softone.model.entity.SysRoleEntity;
 import com.luno.softone.model.entity.UserWindowDto;
-import com.luno.softone.page.Page;
+import com.luno.softone.common.page.Page;
 
 import java.util.List;
 import java.util.Map;

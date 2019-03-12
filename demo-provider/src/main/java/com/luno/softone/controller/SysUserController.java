@@ -1,16 +1,20 @@
 package com.luno.softone.controller;
 
-import com.luno.softone.annotation.SysLog;
+import com.luno.softone.common.annotation.SysLog;
+import com.luno.softone.common.utils.Constant;
+import com.luno.softone.common.utils.PageUtils;
+import com.luno.softone.common.utils.Query;
+import com.luno.softone.common.utils.R;
+import com.luno.softone.common.validator.Assert;
+import com.luno.softone.common.validator.ValidatorUtils;
+import com.luno.softone.common.validator.group.AddGroup;
+import com.luno.softone.common.validator.group.UpdateGroup;
 import com.luno.softone.model.entity.SysUserEntity;
 import com.luno.softone.model.entity.ThirdBindEntity;
 import com.luno.softone.service.SysUserRoleService;
 import com.luno.softone.service.SysUserService;
 import com.luno.softone.service.ThirdBindService;
 import com.luno.softone.utils.*;
-import com.luno.softone.validator.Assert;
-import com.luno.softone.validator.ValidatorUtils;
-import com.luno.softone.validator.group.AddGroup;
-import com.luno.softone.validator.group.UpdateGroup;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;

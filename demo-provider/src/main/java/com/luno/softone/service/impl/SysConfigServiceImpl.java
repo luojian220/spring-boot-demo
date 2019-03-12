@@ -1,10 +1,10 @@
 package com.luno.softone.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.luno.softone.common.exception.RRException;
 import com.luno.softone.dao.SysConfigDao;
 import com.luno.softone.model.entity.SysConfigEntity;
 import com.luno.softone.service.SysConfigService;
-import com.luno.softone.utils.RRException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

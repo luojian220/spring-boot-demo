@@ -1,12 +1,11 @@
 package com.luno.softone.utils;
 
 
+import com.luno.softone.common.utils.StringUtils;
 import com.luno.softone.dao.SysMsgDao;
 import com.luno.softone.model.dto.SysSendMsgDto;
 import com.luno.softone.model.entity.SysMsgEntity;
 import com.luno.softone.model.entity.SysStaffEntity;
-import com.luno.softone.service.SysStaffService;
-import com.luno.softone.service.impl.SysMsgServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

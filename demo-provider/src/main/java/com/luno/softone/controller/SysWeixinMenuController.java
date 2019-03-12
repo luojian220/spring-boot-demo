@@ -2,8 +2,8 @@ package com.luno.softone.controller;
 
 import com.luno.softone.model.entity.SysWeixinMenuEntity;
 import com.luno.softone.service.SysWeixinMenuService;
-import com.luno.softone.utils.Constant;
-import com.luno.softone.utils.R;
+import com.luno.softone.common.utils.Constant;
+import com.luno.softone.common.utils.R;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

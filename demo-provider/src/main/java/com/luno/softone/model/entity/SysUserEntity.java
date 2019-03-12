@@ -1,7 +1,7 @@
 package com.luno.softone.model.entity;
 
-import com.luno.softone.validator.group.AddGroup;
-import com.luno.softone.validator.group.UpdateGroup;
+import com.luno.softone.common.validator.group.AddGroup;
+import com.luno.softone.common.validator.group.UpdateGroup;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;

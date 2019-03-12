@@ -3,7 +3,7 @@ package com.luno.softone.service.impl;
 import com.luno.softone.dao.SysSignDao;
 import com.luno.softone.model.entity.SysSignEntity;
 import com.luno.softone.service.SysSignService;
-import com.luno.softone.utils.SykjException;
+import com.luno.softone.common.utils.SykjException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -2,7 +2,7 @@ package com.luno.softone.service;
 
 
 import com.luno.softone.model.entity.SysSignEntity;
-import com.luno.softone.utils.SykjException;
+import com.luno.softone.common.utils.SykjException;
 
 import java.util.List;
 import java.util.Map;

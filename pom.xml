@@ -12,6 +12,7 @@
         <module>demo-api</module>
         <module>demo-provider</module>
         <module>demo-common</module>
+        <module>demo-generate</module>
     </modules>
 
 

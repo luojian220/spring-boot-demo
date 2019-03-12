@@ -4,7 +4,7 @@ import com.luno.softone.dao.SysMenuDao;
 import com.luno.softone.dao.SysUserDao;
 import com.luno.softone.model.entity.SysMenuEntity;
 import com.luno.softone.model.entity.SysUserEntity;
-import com.luno.softone.utils.Constant;
+import com.luno.softone.common.utils.Constant;
 import com.luno.softone.utils.RedisService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;

@@ -1,5 +1,6 @@
 package com.luno.softone.dao;
 
+import com.luno.softone.common.dao.BaseMapper;
 import com.luno.softone.model.entity.CaseDispatchEntity;
 import com.luno.softone.model.entity.example.CaseDispatchExample;
 

@@ -1,7 +1,7 @@
 package com.luno.softone.controller;
 
 import com.luno.softone.utils.DateUtil;
-import com.luno.softone.utils.R;
+import com.luno.softone.common.utils.R;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

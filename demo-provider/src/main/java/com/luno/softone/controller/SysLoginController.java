@@ -2,8 +2,8 @@ package com.luno.softone.controller;
 
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
-import com.luno.softone.annotation.SysLog;
-import com.luno.softone.utils.R;
+import com.luno.softone.common.annotation.SysLog;
+import com.luno.softone.common.utils.R;
 import com.luno.softone.utils.ShiroUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.crypto.hash.Sha256Hash;

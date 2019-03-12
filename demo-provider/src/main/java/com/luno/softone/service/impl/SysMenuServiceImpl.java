@@ -5,7 +5,7 @@ import com.luno.softone.model.entity.SysMenuEntity;
 import com.luno.softone.service.SysMenuService;
 import com.luno.softone.service.SysRoleMenuService;
 import com.luno.softone.service.SysUserService;
-import com.luno.softone.utils.Constant;
+import com.luno.softone.common.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

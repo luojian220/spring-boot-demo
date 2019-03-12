@@ -1,6 +1,6 @@
 package com.luno.softone.interceptor;
 
-import com.luno.softone.utils.StringUtils;
+import com.luno.softone.common.utils.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 

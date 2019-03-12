@@ -3,14 +3,14 @@ package com.luno.softone.service.impl;
 import com.luno.softone.dao.SysUserDao;
 import com.luno.softone.model.entity.SysUserEntity;
 import com.luno.softone.model.entity.UserWindowDto;
-import com.luno.softone.page.Page;
-import com.luno.softone.page.PageHelper;
+import com.luno.softone.common.page.Page;
+import com.luno.softone.common.page.PageHelper;
 import com.luno.softone.service.SysRoleService;
 import com.luno.softone.service.SysUserRoleService;
 import com.luno.softone.service.SysUserService;
 
-import com.luno.softone.utils.Constant;
-import com.luno.softone.utils.SykjException;
+import com.luno.softone.common.utils.Constant;
+import com.luno.softone.common.utils.SykjException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.slf4j.Logger;

@@ -1,7 +1,7 @@
 package com.luno.softone.model.entity.example;
 
-import com.luno.softone.entity.example.AbstractExample;
-import com.luno.softone.entity.example.GeneratedCriteria;
+import com.luno.softone.common.entity.example.AbstractExample;
+import com.luno.softone.common.entity.example.GeneratedCriteria;
 
 import java.util.Date;
 import java.util.List;

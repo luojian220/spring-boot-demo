@@ -1,6 +1,7 @@
 package com.luno.softone.dao;
 
 
+import com.luno.softone.common.dao.BaseDao;
 import com.luno.softone.model.entity.SysMsgEntity;
 
 /**

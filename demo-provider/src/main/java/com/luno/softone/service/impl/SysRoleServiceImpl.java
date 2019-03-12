@@ -1,13 +1,13 @@
 package com.luno.softone.service.impl;
 
+import com.luno.softone.common.exception.RRException;
 import com.luno.softone.dao.SysRoleDao;
 import com.luno.softone.model.entity.SysRoleEntity;
 import com.luno.softone.model.entity.UserWindowDto;
-import com.luno.softone.page.Page;
-import com.luno.softone.page.PageHelper;
+import com.luno.softone.common.page.Page;
+import com.luno.softone.common.page.PageHelper;
 import com.luno.softone.service.*;
-import com.luno.softone.utils.Constant;
-import com.luno.softone.utils.RRException;
+import com.luno.softone.common.utils.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

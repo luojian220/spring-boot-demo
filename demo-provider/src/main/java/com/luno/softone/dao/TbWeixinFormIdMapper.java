@@ -2,6 +2,7 @@ package com.luno.softone.dao;
 
 
 
+import com.luno.softone.common.dao.BaseMapper;
 import com.luno.softone.model.entity.TbWeixinFormIdEntity;
 import com.luno.softone.model.entity.example.TbWeixinFormIdExample;
 import org.apache.ibatis.annotations.Param;

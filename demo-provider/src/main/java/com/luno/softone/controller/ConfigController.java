@@ -1,8 +1,7 @@
 package com.luno.softone.controller;
 
 import com.luno.softone.service.SysConfigService;
-import com.luno.softone.utils.Constant;
-import com.luno.softone.utils.R;
+import com.luno.softone.common.utils.R;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;

@@ -1,11 +1,10 @@
 package com.luno.softone.service.impl;
 
 
-import com.luno.softone.cache.J2CacheUtils;
 import com.luno.softone.dao.SysMacroDao;
 import com.luno.softone.model.entity.SysMacroEntity;
 import com.luno.softone.service.SysMacroService;
-import com.luno.softone.utils.RedisUtils;
+import com.luno.softone.common.utils.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
