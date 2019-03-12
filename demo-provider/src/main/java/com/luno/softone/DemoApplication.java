@@ -6,7 +6,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication
-@MapperScan("com.luno.softone.dao")
+@MapperScan("com.luno.**.dao")
 public class DemoApplication {
 
 	private static ConfigurableApplicationContext context;
