@@ -3,31 +3,35 @@ package com.luno.softone.utils;
 import com.luno.softone.common.cache.J2CacheUtils;
 import com.luno.softone.common.utils.DateUtils;
 import com.luno.softone.common.utils.RedisUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Component
 public class GenOrderNum {
 
 
     private static final String STR_FORMAT = "0000";
 
     private static final String key = "genCustomerNum";
+
+    @Autowired
+    private RedisService redisService;
     /**
      * 生成客户编号
      * YS-2018100300001
      * @return
      */
-    public static String getCustomerNum() {
+    public String getCustomerNum() {
         StringBuilder sb = new StringBuilder("YS-");
         String today = DateUtils.format(new Date(),"yyyyMMdd");
         sb.append(today);
-//        String key = "genCustomerNum";
+        String key = "genCustomerNum";
 
-//        Object o= J2CacheUtils.get(J2CacheUtils.YSCRMS_CACHE_NAME,key);
-        // TODO: 2019/1/29 redis 取数据 
-        Object o= null;
+        Object o= redisService.get(key);
         if (o == null) {
             sb.append("0001");
         } else {
@@ -42,9 +46,7 @@ public class GenOrderNum {
                 sb.append("0001");
             }
         }
-        //J2CacheUtils.put(J2CacheUtils.YSCRMS_CACHE_NAME,key,sb.toString());
-        // TODO: 2019/1/29 redis 存数据
-        RedisUtils.set(J2CacheUtils.YSCRMS_CACHE_NAME.concat(key),sb.toString());
+        redisService.set(key , sb.toString());
         return sb.toString();
     }
 

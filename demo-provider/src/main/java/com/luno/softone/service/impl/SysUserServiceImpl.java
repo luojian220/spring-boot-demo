@@ -11,6 +11,7 @@ import com.luno.softone.service.SysUserService;
 
 import com.luno.softone.common.utils.Constant;
 import com.luno.softone.common.utils.SykjException;
+import com.luno.softone.utils.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.slf4j.Logger;
@@ -67,8 +68,7 @@ public class SysUserServiceImpl implements SysUserService {
     public SysUserEntity queryObject(Long userId) {
         SysUserEntity sysUserEntity = sysUserDao.queryObject(userId);
         if (sysUserEntity != null && !StringUtils.isEmpty(sysUserEntity.getPicture())) {
-            // TODO: 2019/1/29 头像图片取法修改
-            //sysUserEntity.setPicUrl(FileUtils.link(sysUserEntity.getPicture()));
+            sysUserEntity.setPicUrl(FileUtils.link(sysUserEntity.getPicture()));
         }
         return sysUserEntity;
 

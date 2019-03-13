@@ -437,7 +437,7 @@ public class FileUtils {
 	}
 	/**
 	 *
-	 * @Description: TODO(压缩单个文件)
+	 * @Description: 压缩单个文件
 	 * @author duchunsheng
 	 * @date 2015-5-21 上午11:23:37
 	 * @param filepath
@@ -460,7 +460,6 @@ public class FileUtils {
 					zipOut.write(temp);
 				}
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
 				if (input != null) {
@@ -473,7 +472,6 @@ public class FileUtils {
 			try {
 				zipOut.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

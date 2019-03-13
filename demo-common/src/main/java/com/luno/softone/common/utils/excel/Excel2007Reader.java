@@ -301,7 +301,7 @@ public class Excel2007Reader extends DefaultHandler {
                     break;
 
                 case INLINESTR:
-                    // TODO: have seen an example of this, so it's untested.
+                    // : have seen an example of this, so it's untested.
                     XSSFRichTextString rtsi = new XSSFRichTextString(
                             value.toString());
                     thisStr = rtsi.toString();
@@ -315,7 +315,6 @@ public class Excel2007Reader extends DefaultHandler {
                                 sharedStringsTable.getEntryAt(idx));
                         thisStr = rtss.toString();
                     } catch (NumberFormatException ex) {
-                        // @TODO
                     }
                     break;
 
