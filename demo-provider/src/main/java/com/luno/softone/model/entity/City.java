@@ -7,7 +7,7 @@ import javax.persistence.Table;
  * @author luojian
  * @version 1.0
  * @ClassName: City
- * @Reason: TODO ADD REASON(可选)
+ * @Reason:
  * @date: 2019年01月28日 14:45
  * @since JDK 1.7
  */

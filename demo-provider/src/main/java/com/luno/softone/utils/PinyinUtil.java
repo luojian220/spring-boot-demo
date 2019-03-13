@@ -24,8 +24,8 @@ public class PinyinUtil {
      * @param chinese
      * @return
      */
-    /*public static String ToFirstChar(String chinese){
-    	if(chinese ==null) {
+    public static String ToFirstChar(String chinese){
+    	/*if(chinese ==null) {
     		return null;
     	}else {
     		chinese =BCConvert.qj2bj(chinese);
@@ -45,17 +45,18 @@ public class PinyinUtil {
             }else{
                 pinyinStr += newChar[i];
             }
-        }
-        return pinyinStr;
+        }*/
+
+        return chinese;
     }
 
-    *//**
+    /**
      * 汉字转为拼音
      * @param chinese
      * @return
-     *//*
+     */
     public static String ToPinyin(String chinese){
-        String pinyinStr = "";
+        /*String pinyinStr = "";
         if(chinese ==null) {
     		return null;
     	}else {
@@ -75,7 +76,7 @@ public class PinyinUtil {
             }else{
                 pinyinStr += newChar[i];
             }
-        }
-        return pinyinStr;
-    }*/
+        }*/
+        return chinese;
+    }
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author luojian
  * @version 1.0
  * @ClassName: IndexController
- * @Reason: TODO ADD REASON(可选)
+ * @Reason:
  * @date: 2018年11月13日 14:20
  * @since JDK 1.8
  */

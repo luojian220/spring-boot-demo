@@ -1,0 +1,1029 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.luno.softone.dao.CustomerMapper">
+
+    <resultMap type="com.luno.softone.model.entity.CustomerEntity" id="BaseResultMap">
+        <result property="cuId" column="cu_id"/>
+        <result property="cuNumber" column="cu_number"/>
+        <result property="cuName" column="cu_name"/>
+        <result property="cuSimpleName" column="cu_simple_name"/>
+        <result property="cuPyName" column="cu_py_name"/>
+        <result property="cuSimplePyName" column="cu_simple_py_name"/>
+        <result property="cuPhone" column="cu_phone"/>
+        <result property="cuAddress" column="cu_address"/>
+        <result property="cuContact" column="cu_contact"/>
+        <result property="cuContactPhone" column="cu_contact_phone"/>
+        <result property="cuFax" column="cu_fax"/>
+        <result property="cuZipCode" column="cu_zip_code"/>
+        <result property="cuUrl" column="cu_url"/>
+        <result property="cuEmail" column="cu_email"/>
+        <result property="cuPrincipal" column="cu_principal"/>
+        <result property="cuPrincipalPhone" column="cu_principal_phone"/>
+        <result property="cuSource" column="cu_source"/>
+        <result property="cuState" column="cu_state"/>
+        <result property="cuIsVip" column="cu_is_vip"/>
+        <result property="cuContractBeginTime" column="cu_contract_begin_time"/>
+        <result property="cuContractEndTime" column="cu_contract_end_time"/>
+        <result property="cuMarketEmpId" column="cu_market_emp_id"/>
+        <result property="cuAddEmpNumber" column="cu_add_emp_number"/>
+        <result property="cuAddTime" column="cu_add_time"/>
+        <result property="cuUpEmpNumber" column="cu_up_emp_number"/>
+        <result property="cuUpTime" column="cu_up_time"/>
+        <result property="cuRemark" column="cu_remark"/>
+    </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List" >
+	    `cu_id`,
+	    `cu_number`,
+	    `cu_name`,
+	    `cu_simple_name`,
+	    `cu_py_name`,
+	    `cu_simple_py_name`,
+	    `cu_phone`,
+	    `cu_address`,
+	    `cu_contact`,
+	    `cu_contact_phone`,
+	    `cu_fax`,
+	    `cu_zip_code`,
+	    `cu_url`,
+	    `cu_email`,
+	    `cu_principal`,
+	    `cu_principal_phone`,
+	    `cu_source`,
+	    `cu_state`,
+	    `cu_is_vip`,
+	    `cu_contract_begin_time`,
+	    `cu_contract_end_time`,
+	    `cu_market_emp_id`,
+	    (SELECT name FROM `sys_staff` where staff_id=cu_market_emp_id) cuMarketEmpName,
+	    `cu_add_emp_number`,
+	    `cu_add_time`,
+	    `cu_up_emp_number`,
+	    `cu_up_time`,
+	    `cu_remark`
+  	</sql>
+
+
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.luno.softone.model.entity.example.CustomerExample" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from customer
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+        <if test="pageStart!=null and pageStart gt -1" >
+            limit ${pageStart},${pageSize}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from customer
+        where cu_id = #{cuId,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from customer
+        where cu_id = #{cuId,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.luno.softone.model.entity.example.CustomerExample" >
+        delete from customer
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <delete id="deleteBatch">
+        update customer set cu_state = '1' where cu_id in
+        <foreach item="cuId" collection="array" open="(" separator="," close=")">
+                  #{cuId}
+        </foreach>
+    </delete>
+    <insert id="insert" parameterType="com.luno.softone.model.entity.CustomerEntity">
+		insert into customer(
+          `cu_id`,
+          `cu_number`,
+          `cu_name`,
+          `cu_simple_name`,
+          `cu_py_name`,
+          `cu_simple_py_name`,
+          `cu_phone`,
+          `cu_address`,
+          `cu_contact`,
+          `cu_contact_phone`,
+          `cu_fax`,
+          `cu_zip_code`,
+          `cu_url`,
+          `cu_email`,
+          `cu_principal`,
+          `cu_principal_phone`,
+          `cu_source`,
+          `cu_state`,
+          `cu_is_vip`,
+          `cu_contract_begin_time`,
+          `cu_contract_end_time`,
+          `cu_market_emp_id`,
+          `cu_add_emp_number`,
+          `cu_add_time`,
+          `cu_up_emp_number`,
+          `cu_up_time`,
+          `cu_remark`        )
+		values(
+          #{cuId},
+          #{cuNumber},
+          #{cuName},
+          #{cuSimpleName},
+          #{cuPyName},
+          #{cuSimplePyName},
+          #{cuPhone},
+          #{cuAddress},
+          #{cuContact},
+          #{cuContactPhone},
+          #{cuFax},
+          #{cuZipCode},
+          #{cuUrl},
+          #{cuEmail},
+          #{cuPrincipal},
+          #{cuPrincipalPhone},
+          #{cuSource},
+          #{cuState},
+          #{cuIsVip},
+          #{cuContractBeginTime},
+          #{cuContractEndTime},
+          #{cuMarketEmpId},
+          #{cuAddEmpNumber},
+          #{cuAddTime},
+          #{cuUpEmpNumber},
+          #{cuUpTime},
+          #{cuRemark}         )
+	</insert>
+
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into customer (
+            `cu_number`,
+            `cu_name`,
+            `cu_simple_name`,
+            `cu_py_name`,
+            `cu_simple_py_name`,
+            `cu_phone`,
+            `cu_address`,
+            `cu_contact`,
+            `cu_contact_phone`,
+            `cu_fax`,
+            `cu_zip_code`,
+            `cu_url`,
+            `cu_email`,
+            `cu_principal`,
+            `cu_principal_phone`,
+            `cu_source`,
+            `cu_state`,
+            `cu_is_vip`,
+            `cu_contract_begin_time`,
+            `cu_contract_end_time`,
+            `cu_market_emp_id`,
+            `cu_add_emp_number`,
+            `cu_add_time`,
+            `cu_up_emp_number`,
+            `cu_up_time`,
+            `cu_remark`)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.cuNumber},
+            #{item.cuName},
+            #{item.cuSimpleName},
+            #{item.cuPyName},
+            #{item.cuSimplePyName},
+            #{item.cuPhone},
+            #{item.cuAddress},
+            #{item.cuContact},
+            #{item.cuContactPhone},
+            #{item.cuFax},
+            #{item.cuZipCode},
+            #{item.cuUrl},
+            #{item.cuEmail},
+            #{item.cuPrincipal},
+            #{item.cuPrincipalPhone},
+            #{item.cuSource},
+            #{item.cuState},
+            #{item.cuIsVip},
+            #{item.cuContractBeginTime},
+            #{item.cuContractEndTime},
+            #{item.cuMarketEmpId},
+            #{item.cuAddEmpNumber},
+            #{item.cuAddTime},
+            #{item.cuUpEmpNumber},
+            #{item.cuUpTime},
+            #{item.cuRemark} )
+        </foreach>
+    </insert>
+
+
+    <insert id="insertSelective" parameterType="com.luno.softone.model.entity.CustomerEntity"   useGeneratedKeys="true" keyProperty="cuId">
+        insert into customer
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+          <if test="cuId != null">
+            `cu_id`,
+          </if>
+          <if test="cuNumber != null">
+            `cu_number`,
+          </if>
+          <if test="cuName != null">
+            `cu_name`,
+          </if>
+          <if test="cuSimpleName != null">
+            `cu_simple_name`,
+          </if>
+          <if test="cuPyName != null">
+            `cu_py_name`,
+          </if>
+          <if test="cuSimplePyName != null">
+            `cu_simple_py_name`,
+          </if>
+          <if test="cuPhone != null">
+            `cu_phone`,
+          </if>
+          <if test="cuAddress != null">
+            `cu_address`,
+          </if>
+          <if test="cuContact != null">
+            `cu_contact`,
+          </if>
+          <if test="cuContactPhone != null">
+            `cu_contact_phone`,
+          </if>
+          <if test="cuFax != null">
+            `cu_fax`,
+          </if>
+          <if test="cuZipCode != null">
+            `cu_zip_code`,
+          </if>
+          <if test="cuUrl != null">
+            `cu_url`,
+          </if>
+          <if test="cuEmail != null">
+            `cu_email`,
+          </if>
+          <if test="cuPrincipal != null">
+            `cu_principal`,
+          </if>
+          <if test="cuPrincipalPhone != null">
+            `cu_principal_phone`,
+          </if>
+          <if test="cuSource != null">
+            `cu_source`,
+          </if>
+          <if test="cuState != null">
+            `cu_state`,
+          </if>
+          <if test="cuIsVip != null">
+            `cu_is_vip`,
+          </if>
+          <if test="cuContractBeginTime != null">
+            `cu_contract_begin_time`,
+          </if>
+          <if test="cuContractEndTime != null">
+            `cu_contract_end_time`,
+          </if>
+          <if test="cuMarketEmpId != null">
+            `cu_market_emp_id`,
+          </if>
+          <if test="cuAddEmpNumber != null">
+            `cu_add_emp_number`,
+          </if>
+          <if test="cuAddTime != null">
+            `cu_add_time`,
+          </if>
+          <if test="cuUpEmpNumber != null">
+            `cu_up_emp_number`,
+          </if>
+          <if test="cuUpTime != null">
+            `cu_up_time`,
+          </if>
+          <if test="cuRemark != null">
+            `cu_remark`
+          </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="cuId != null">
+              #{cuId},
+            </if>
+            <if test="cuNumber != null">
+              #{cuNumber},
+            </if>
+            <if test="cuName != null">
+              #{cuName},
+            </if>
+            <if test="cuSimpleName != null">
+              #{cuSimpleName},
+            </if>
+            <if test="cuPyName != null">
+              #{cuPyName},
+            </if>
+            <if test="cuSimplePyName != null">
+              #{cuSimplePyName},
+            </if>
+            <if test="cuPhone != null">
+              #{cuPhone},
+            </if>
+            <if test="cuAddress != null">
+              #{cuAddress},
+            </if>
+            <if test="cuContact != null">
+              #{cuContact},
+            </if>
+            <if test="cuContactPhone != null">
+              #{cuContactPhone},
+            </if>
+            <if test="cuFax != null">
+              #{cuFax},
+            </if>
+            <if test="cuZipCode != null">
+              #{cuZipCode},
+            </if>
+            <if test="cuUrl != null">
+              #{cuUrl},
+            </if>
+            <if test="cuEmail != null">
+              #{cuEmail},
+            </if>
+            <if test="cuPrincipal != null">
+              #{cuPrincipal},
+            </if>
+            <if test="cuPrincipalPhone != null">
+              #{cuPrincipalPhone},
+            </if>
+            <if test="cuSource != null">
+              #{cuSource},
+            </if>
+            <if test="cuState != null">
+              #{cuState},
+            </if>
+            <if test="cuIsVip != null">
+              #{cuIsVip},
+            </if>
+            <if test="cuContractBeginTime != null">
+              #{cuContractBeginTime},
+            </if>
+            <if test="cuContractEndTime != null">
+              #{cuContractEndTime},
+            </if>
+            <if test="cuMarketEmpId != null">
+              #{cuMarketEmpId},
+            </if>
+            <if test="cuAddEmpNumber != null">
+              #{cuAddEmpNumber},
+            </if>
+            <if test="cuAddTime != null">
+              #{cuAddTime},
+            </if>
+            <if test="cuUpEmpNumber != null">
+              #{cuUpEmpNumber},
+            </if>
+            <if test="cuUpTime != null">
+              #{cuUpTime},
+            </if>
+            <if test="cuRemark != null">
+              #{cuRemark}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" parameterType="com.luno.softone.model.entity.example.CustomerExample" resultType="java.lang.Integer" >
+        select count(*) from customer
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+        update customer
+        <set>
+          <if test="cuNumber != null">
+              `cu_number` = #{cuNumber},
+          </if>
+          <if test="cuName != null">
+              `cu_name` = #{cuName},
+          </if>
+          <if test="cuSimpleName != null">
+              `cu_simple_name` = #{cuSimpleName},
+          </if>
+          <if test="cuPyName != null">
+              `cu_py_name` = #{cuPyName},
+          </if>
+          <if test="cuSimplePyName != null">
+              `cu_simple_py_name` = #{cuSimplePyName},
+          </if>
+          <if test="cuPhone != null">
+              `cu_phone` = #{cuPhone},
+          </if>
+          <if test="cuAddress != null">
+              `cu_address` = #{cuAddress},
+          </if>
+          <if test="cuContact != null">
+              `cu_contact` = #{cuContact},
+          </if>
+          <if test="cuContactPhone != null">
+              `cu_contact_phone` = #{cuContactPhone},
+          </if>
+          <if test="cuFax != null">
+              `cu_fax` = #{cuFax},
+          </if>
+          <if test="cuZipCode != null">
+              `cu_zip_code` = #{cuZipCode},
+          </if>
+          <if test="cuUrl != null">
+              `cu_url` = #{cuUrl},
+          </if>
+          <if test="cuEmail != null">
+              `cu_email` = #{cuEmail},
+          </if>
+          <if test="cuPrincipal != null">
+              `cu_principal` = #{cuPrincipal},
+          </if>
+          <if test="cuPrincipalPhone != null">
+              `cu_principal_phone` = #{cuPrincipalPhone},
+          </if>
+          <if test="cuSource != null">
+              `cu_source` = #{cuSource},
+          </if>
+          <if test="cuState != null">
+              `cu_state` = #{cuState},
+          </if>
+          <if test="cuIsVip != null">
+              `cu_is_vip` = #{cuIsVip},
+          </if>
+          <if test="cuContractBeginTime != null">
+              `cu_contract_begin_time` = #{cuContractBeginTime},
+          </if>
+          <if test="cuContractEndTime != null">
+              `cu_contract_end_time` = #{cuContractEndTime},
+          </if>
+          <if test="cuMarketEmpId != null">
+              `cu_market_emp_id` = #{cuMarketEmpId},
+          </if>
+          <if test="cuAddEmpNumber != null">
+              `cu_add_emp_number` = #{cuAddEmpNumber},
+          </if>
+          <if test="cuAddTime != null">
+              `cu_add_time` = #{cuAddTime},
+          </if>
+          <if test="cuUpEmpNumber != null">
+              `cu_up_emp_number` = #{cuUpEmpNumber},
+          </if>
+          <if test="cuUpTime != null">
+              `cu_up_time` = #{cuUpTime},
+          </if>
+          <if test="cuRemark != null">
+              `cu_remark` = #{cuRemark}
+          </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map" >
+        update customer
+        <set>
+          `cu_number` = #{cuNumber},
+          `cu_name` = #{cuName},
+          `cu_simple_name` = #{cuSimpleName},
+          `cu_py_name` = #{cuPyName},
+          `cu_simple_py_name` = #{cuSimplePyName},
+          `cu_phone` = #{cuPhone},
+          `cu_address` = #{cuAddress},
+          `cu_contact` = #{cuContact},
+          `cu_contact_phone` = #{cuContactPhone},
+          `cu_fax` = #{cuFax},
+          `cu_zip_code` = #{cuZipCode},
+          `cu_url` = #{cuUrl},
+          `cu_email` = #{cuEmail},
+          `cu_principal` = #{cuPrincipal},
+          `cu_principal_phone` = #{cuPrincipalPhone},
+          `cu_source` = #{cuSource},
+          `cu_state` = #{cuState},
+          `cu_is_vip` = #{cuIsVip},
+          `cu_contract_begin_time` = #{cuContractBeginTime},
+          `cu_contract_end_time` = #{cuContractEndTime},
+          `cu_market_emp_id` = #{cuMarketEmpId},
+          `cu_add_emp_number` = #{cuAddEmpNumber},
+          `cu_add_time` = #{cuAddTime},
+          `cu_up_emp_number` = #{cuUpEmpNumber},
+          `cu_up_time` = #{cuUpTime},
+          `cu_remark` = #{cuRemark}
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.luno.softone.model.entity.CustomerEntity">
+        update customer
+        <set>
+          <if test="cuNumber != null">
+            `cu_number` = #{cuNumber},
+          </if>
+          <if test="cuName != null">
+            `cu_name` = #{cuName},
+          </if>
+          <if test="cuSimpleName != null">
+            `cu_simple_name` = #{cuSimpleName},
+          </if>
+          <if test="cuPyName != null">
+            `cu_py_name` = #{cuPyName},
+          </if>
+          <if test="cuSimplePyName != null">
+            `cu_simple_py_name` = #{cuSimplePyName},
+          </if>
+          <if test="cuPhone != null">
+            `cu_phone` = #{cuPhone},
+          </if>
+          <if test="cuAddress != null">
+            `cu_address` = #{cuAddress},
+          </if>
+          <if test="cuContact != null">
+            `cu_contact` = #{cuContact},
+          </if>
+          <if test="cuContactPhone != null">
+            `cu_contact_phone` = #{cuContactPhone},
+          </if>
+          <if test="cuFax != null">
+            `cu_fax` = #{cuFax},
+          </if>
+          <if test="cuZipCode != null">
+            `cu_zip_code` = #{cuZipCode},
+          </if>
+          <if test="cuUrl != null">
+            `cu_url` = #{cuUrl},
+          </if>
+          <if test="cuEmail != null">
+            `cu_email` = #{cuEmail},
+          </if>
+          <if test="cuPrincipal != null">
+            `cu_principal` = #{cuPrincipal},
+          </if>
+          <if test="cuPrincipalPhone != null">
+            `cu_principal_phone` = #{cuPrincipalPhone},
+          </if>
+          <if test="cuSource != null">
+            `cu_source` = #{cuSource},
+          </if>
+          <if test="cuState != null">
+            `cu_state` = #{cuState},
+          </if>
+          <if test="cuIsVip != null">
+            `cu_is_vip` = #{cuIsVip},
+          </if>
+          <if test="cuContractBeginTime != null">
+            `cu_contract_begin_time` = #{cuContractBeginTime},
+          </if>
+          <if test="cuContractEndTime != null">
+            `cu_contract_end_time` = #{cuContractEndTime},
+          </if>
+          <if test="cuMarketEmpId != null">
+            `cu_market_emp_id` = #{cuMarketEmpId},
+          </if>
+          <if test="cuAddEmpNumber != null">
+            `cu_add_emp_number` = #{cuAddEmpNumber},
+          </if>
+          <if test="cuAddTime != null">
+            `cu_add_time` = #{cuAddTime},
+          </if>
+          <if test="cuUpEmpNumber != null">
+            `cu_up_emp_number` = #{cuUpEmpNumber},
+          </if>
+          <if test="cuUpTime != null">
+            `cu_up_time` = #{cuUpTime},
+          </if>
+          <if test="cuRemark != null">
+            `cu_remark` = #{cuRemark}
+          </if>
+        </set>
+        where cu_id = #{cuId}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.luno.softone.model.entity.CustomerEntity" >
+        update customer
+        <set>
+            `cu_number` = #{cuNumber},
+            `cu_name` = #{cuName},
+            `cu_simple_name` = #{cuSimpleName},
+            `cu_py_name` = #{cuPyName},
+            `cu_simple_py_name` = #{cuSimplePyName},
+            `cu_phone` = #{cuPhone},
+            `cu_address` = #{cuAddress},
+            `cu_contact` = #{cuContact},
+            `cu_contact_phone` = #{cuContactPhone},
+            `cu_fax` = #{cuFax},
+            `cu_zip_code` = #{cuZipCode},
+            `cu_url` = #{cuUrl},
+            `cu_email` = #{cuEmail},
+            `cu_principal` = #{cuPrincipal},
+            `cu_principal_phone` = #{cuPrincipalPhone},
+            `cu_source` = #{cuSource},
+            `cu_state` = #{cuState},
+            `cu_is_vip` = #{cuIsVip},
+            `cu_contract_begin_time` = #{cuContractBeginTime},
+            `cu_contract_end_time` = #{cuContractEndTime},
+            `cu_market_emp_id` = #{cuMarketEmpId},
+            `cu_add_emp_number` = #{cuAddEmpNumber},
+            `cu_add_time` = #{cuAddTime},
+            `cu_up_emp_number` = #{cuUpEmpNumber},
+            `cu_up_time` = #{cuUpTime},
+            `cu_remark` = #{cuRemark}
+        </set>
+        where cu_id = #{cuId,jdbcType=BIGINT}
+  </update>
+
+
+    <select id="queryList" resultType="com.luno.softone.model.entity.CustomerEntity">
+        select
+          `cu_id`,
+          `cu_number`,
+          `cu_name`,
+          `cu_simple_name`,
+          `cu_py_name`,
+          `cu_simple_py_name`,
+          `cu_phone`,
+          `cu_address`,
+          `cu_contact`,
+          `cu_contact_phone`,
+          `cu_fax`,
+          `cu_zip_code`,
+          `cu_url`,
+          `cu_email`,
+          `cu_principal`,
+          `cu_principal_phone`,
+          `cu_source`,
+          `cu_state`,
+          `cu_is_vip`,
+          `cu_contract_begin_time`,
+          `cu_contract_end_time`,
+          `cu_market_emp_id`,
+           (SELECT name FROM `sys_staff` where staff_id=cu_market_emp_id) cuMarketEmpName,
+          `cu_add_emp_number`,
+          `cu_add_time`,
+          `cu_up_emp_number`,
+          `cu_up_time`,
+          `cu_remark`
+        from customer
+        WHERE 1=1
+        and cu_state = '0'
+        <if test="cuName != null and cuName.trim() != ''">
+            AND cu_name LIKE concat('%',#{cuName},'%')
+        </if>
+        <if test="cuIsVip != null">
+            AND cu_is_vip = #{cuIsVip}
+        </if>
+        <if test="cuMarketEmpId != null and cuMarketEmpId != ''">
+            AND cu_market_emp_id = #{cuMarketEmpId}
+        </if>
+        
+        <if test="beginTime != null">
+            AND cu_contract_end_time &gt;= #{beginTime}
+        </if>
+        <if test="endTime != null">
+            AND cu_contract_end_time &lt;= #{endTime}
+        </if>
+         <if test="days != null">
+            AND cu_id not in (SELECT distinct cu_id FROM `customer_progress_record` t where t.create_date >=date_sub(now() ,interval #{days} DAY))
+        </if>
+        <if test="authorize != null and authorize.trim() != '' and authorize == 'require'">
+           <!--  AND (customer.cu_add_emp_number = #{currentEmpId}
+            or customer.cu_market_emp_id = #{currentEmpId}
+            ) -->
+            and customer.cu_market_emp_id = #{currentEmpId}
+        </if>
+        <if test="deptFilter != null">
+			AND customer.cu_market_emp_id in(
+			SELECT s.staff_id FROM `sys_dept` d,sys_staff s 
+			where d.`name`=s.dpm_name 
+			and (d.dept_id in (${deptFilter}) or parent_id in (${deptFilter}))
+			)
+		</if>
+        <if test="cuContractEndTimeLt != null">
+            AND cu_contract_end_time &lt;= #{cuContractEndTimeLt}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by cu_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+    
+    
+    <select id="queryHelpList" resultType="com.luno.softone.model.entity.CustomerShortEntity">
+        select
+          `cu_id`,
+          `cu_number`,
+          `cu_name`,
+          `cu_simple_name`,
+          `cu_py_name`,
+          `cu_simple_py_name`
+        from customer
+        WHERE 1=1
+        and cu_state = '0'
+        <if test="cuName != null and cuName.trim() != ''">
+            AND (cu_name LIKE concat('%',#{cuName},'%') or cu_py_name like concat('%',#{cuName},'%') or cu_simple_py_name like concat('%',#{cuName},'%'))
+        </if>
+        <if test="cuIsVip != null">
+            AND cu_is_vip = #{cuIsVip}
+        </if>
+        <if test="cuMarketEmpId != null and cuMarketEmpId != ''">
+            AND cu_market_emp_id = #{cuMarketEmpId}
+        </if>
+        
+        <if test="beginTime != null">
+            AND cu_contract_end_time &gt;= #{beginTime}
+        </if>
+        <if test="endTime != null">
+            AND cu_contract_end_time &lt;= #{endTime}
+        </if>
+         <if test="days != null">
+            AND cu_id not in (SELECT distinct cu_id FROM `customer_progress_record` t where t.create_date >=date_sub(now() ,interval #{days} DAY))
+        </if>
+        <if test="authorize != null and authorize.trim() != '' and authorize == 'require'">
+           <!--  AND (customer.cu_add_emp_number = #{currentEmpId} -->
+            and customer.cu_market_emp_id = #{currentEmpId}
+        </if>
+        <if test="cuContractEndTimeLt != null">
+            AND cu_contract_end_time &lt;= #{cuContractEndTimeLt}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by cu_simple_py_name 
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+    
+     <select id="queryTraceList" resultType="com.luno.softone.model.entity.CustomerEntity">
+        select
+          `cu_id`,
+          `cu_number`,
+          `cu_name`,
+          `cu_simple_name`,
+          `cu_py_name`,
+          `cu_simple_py_name`,
+          `cu_phone`,
+          `cu_address`,
+          `cu_contact`,
+          `cu_contact_phone`,
+          `cu_fax`,
+          `cu_zip_code`,
+          `cu_url`,
+          `cu_email`,
+          `cu_principal`,
+          `cu_principal_phone`,
+          `cu_source`,
+          `cu_state`,
+          `cu_is_vip`,
+          `cu_contract_begin_time`,
+          `cu_contract_end_time`,
+          `cu_market_emp_id`,
+           (SELECT name FROM `sys_staff` where staff_id=cu_market_emp_id) cuMarketEmpName,
+          `cu_add_emp_number`,
+          `cu_add_time`,
+          `cu_up_emp_number`,
+          `cu_up_time`,
+          `cu_remark`,content content,progress_date progressDate,create_emp_id createEmpId,type type
+        from customer left join v_progress_record on  cu_id =cuid
+        WHERE cu_state = '0'
+        <if test="cuName != null and cuName.trim() != ''">
+            AND cu_name LIKE concat('%',#{cuName},'%')
+        </if>
+         <if test="content != null and content.trim() != ''">
+            AND content LIKE concat('%',#{content},'%')
+        </if>
+        
+        <if test="cuIsVip != null">
+            AND cu_is_vip = #{cuIsVip}
+        </if>
+        <if test="cuMarketEmpId != null and cuMarketEmpId != ''">
+            AND cu_market_emp_id = #{cuMarketEmpId}
+        </if>
+        
+        <if test="beginTime != null">
+            AND cu_contract_end_time &gt;= #{beginTime}
+        </if>
+        <if test="endTime != null">
+            AND cu_contract_end_time &lt;= #{endTime}
+        </if>
+         <if test="days != null">
+            AND cu_id not in (SELECT distinct cu_id FROM `customer_progress_record` t where t.create_date >=date_sub(now() ,interval #{days} DAY))
+        </if>
+        <if test="authorize != null and authorize.trim() != '' and authorize == 'require'">
+           <!--  AND (customer.cu_add_emp_number = #{currentEmpId}
+            or customer.cu_market_emp_id = #{currentEmpId}
+            ) -->
+            and customer.cu_market_emp_id = #{currentEmpId}
+        </if>
+        <if test="deptFilter != null">
+			AND customer.cu_market_emp_id in(
+			SELECT s.staff_id FROM `sys_dept` d,sys_staff s 
+			where d.`name`=s.dpm_name 
+			and (d.dept_id in (${deptFilter}) or parent_id in (${deptFilter}))
+			)
+		</if>
+        <if test="cuContractEndTimeLt != null">
+            AND cu_contract_end_time &lt;= #{cuContractEndTimeLt}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by progress_date desc,cu_id 
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+	<select id="queryTraceTotal" resultType="int">
+	 	select count(*) 
+		from customer left join v_progress_record on  cu_id =cuid
+        WHERE cu_state = '0'
+        <if test="cuName != null and cuName.trim() != ''">
+            AND cu_name LIKE concat('%',#{cuName},'%')
+        </if>
+         <if test="content != null and content.trim() != ''">
+            AND content LIKE concat('%',#{content},'%')
+        </if>
+        
+        <if test="cuIsVip != null">
+            AND cu_is_vip = #{cuIsVip}
+        </if>
+        <if test="cuMarketEmpId != null and cuMarketEmpId != ''">
+            AND cu_market_emp_id = #{cuMarketEmpId}
+        </if>
+        
+        <if test="beginTime != null">
+            AND cu_contract_end_time &gt;= #{beginTime}
+        </if>
+        <if test="endTime != null">
+            AND cu_contract_end_time &lt;= #{endTime}
+        </if>
+         <if test="days != null">
+            AND cu_id not in (SELECT distinct cu_id FROM `customer_progress_record` t where t.create_date >=date_sub(now() ,interval #{days} DAY))
+        </if>
+        <if test="authorize != null and authorize.trim() != '' and authorize == 'require'">
+           <!--  AND (customer.cu_add_emp_number = #{currentEmpId}
+            or customer.cu_market_emp_id = #{currentEmpId}
+            ) -->
+            and customer.cu_market_emp_id = #{currentEmpId}
+        </if>
+        <if test="deptFilter != null">
+			AND customer.cu_market_emp_id in(
+			SELECT s.staff_id FROM `sys_dept` d,sys_staff s 
+			where d.`name`=s.dpm_name 
+			and (d.dept_id in (${deptFilter}) or parent_id in (${deptFilter}))
+			)
+		</if>
+        <if test="cuContractEndTimeLt != null">
+            AND cu_contract_end_time &lt;= #{cuContractEndTimeLt}
+        </if>
+
+	</select>
+    <select id="queryTotal" resultType="int">
+        select count(*) 
+         from customer
+        WHERE 1=1
+        and cu_state = '0'
+        <if test="cuName != null and cuName.trim() != ''">
+            AND cu_name LIKE concat('%',#{cuName},'%')
+        </if>
+        <if test="cuIsVip != null">
+            AND cu_is_vip = #{cuIsVip}
+        </if>
+        <if test="cuMarketEmpId != null and cuMarketEmpId != ''">
+            AND cu_market_emp_id = #{cuMarketEmpId}
+        </if>
+        
+        <if test="beginTime != null">
+            AND cu_contract_end_time &gt;= #{beginTime}
+        </if>
+        <if test="endTime != null">
+            AND cu_contract_end_time &lt;= #{endTime}
+        </if>
+         <if test="days != null">
+            AND cu_id not in (SELECT distinct cu_id FROM `customer_progress_record` t where t.create_date >=date_sub(now() ,interval #{days} DAY))
+        </if>
+        <if test="authorize != null and authorize.trim() != '' and authorize == 'require'">
+           <!--  AND (customer.cu_add_emp_number = #{currentEmpId}
+            or customer.cu_market_emp_id = #{currentEmpId}
+            ) -->
+            and customer.cu_market_emp_id = #{currentEmpId}
+        </if>
+        <if test="deptFilter != null">
+			AND customer.cu_market_emp_id in(
+			SELECT s.staff_id FROM `sys_dept` d,sys_staff s 
+			where d.`name`=s.dpm_name 
+			and (d.dept_id in (${deptFilter}) or parent_id in (${deptFilter}))
+			)
+		</if>
+        <if test="cuContractEndTimeLt != null">
+            AND cu_contract_end_time &lt;= #{cuContractEndTimeLt}
+        </if>
+<!--         <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by cu_id desc
+            </otherwise>
+        </choose> -->
+
+        
+        <!-- from customer
+        WHERE 1=1
+        and cu_state = '0'
+        <if test="cuName != null and cuName.trim() != ''">
+            AND cu_name LIKE concat('%',#{cuName},'%')
+        </if>
+        <if test="cuIsVip != null">
+            AND cu_is_vip = #{cuIsVip}
+        </if>
+        <if test="cuMarketEmpId != null and cuMarketEmpId != ''">
+            AND cu_market_emp_id = #{cuMarketEmpId}
+        </if>
+        <if test="authorize != null and authorize.trim() != '' and authorize == 'require'">
+            AND (customer.cu_add_emp_number = #{currentEmpId}
+            or customer.cu_market_emp_id = #{currentEmpId}
+            )
+        </if> -->
+    </select>
+</mapper>

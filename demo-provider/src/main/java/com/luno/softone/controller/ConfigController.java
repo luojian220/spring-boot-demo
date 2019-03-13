@@ -16,7 +16,7 @@ import java.util.Map;
  * @author luojian
  * @version 1.0
  * @ClassName: ConfigController
- * @Reason: TODO ADD REASON(可选)
+ * @Reason:
  * @date: 2019年02月17日 15:29
  * @company:warWolf
  * @since JDK 1.8

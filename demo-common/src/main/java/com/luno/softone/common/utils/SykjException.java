@@ -4,7 +4,7 @@ package com.luno.softone.common.utils;
  * @author luojian
  * @version 1.0
  * @ClassName: SykjException
- * @Reason: TODO ADD REASON(可选)
+ * @Reason:
  * @date: 2019年01月29日 16:41
 
  * @since JDK 1.7

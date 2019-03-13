@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.luno.softone.dao.CustomerContactMapper">
+
+    <resultMap type="com.luno.softone.model.entity.CustomerContactEntity" id="BaseResultMap">
+        <result property="ccId" column="cc_id"/>
+        <result property="ccCuId" column="cc_cu_id"/>
+        <result property="ccContact" column="cc_contact"/>
+        <result property="ccPhone" column="cc_phone"/>
+        <result property="ccAddTime" column="cc_add_time"/>
+    </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List" >
+	    `cc_id`,
+	    `cc_cu_id`,
+	    `cc_contact`,
+	    `cc_phone`,
+	    `cc_add_time`
+  	</sql>
+
+
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.luno.softone.model.entity.example.CustomerContactExample" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from customer_contact
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+        <if test="pageStart!=null and pageStart gt -1" >
+            limit ${pageStart},${pageSize}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from customer_contact
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from customer_contact
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.luno.softone.model.entity.example.CustomerContactExample" >
+        delete from customer_contact
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <delete id="deleteBatch">
+        delete from customer_contact where cc_id in
+<foreach item="ccId" collection="array" open="(" separator="," close=")">
+          #{ccId}
+</foreach>
+    </delete>
+    <insert id="insert" parameterType="com.luno.softone.model.entity.CustomerContactEntity">
+		insert into customer_contact(
+          `cc_id`,
+          `cc_cu_id`,
+          `cc_contact`,
+          `cc_phone`,
+          `cc_add_time`        )
+		values(
+          #{ccId},
+          #{ccCuId},
+          #{ccContact},
+          #{ccPhone},
+          #{ccAddTime}         )
+	</insert>
+
+
+    <insert id="insertSelective" parameterType="com.luno.softone.model.entity.CustomerContactEntity">
+        insert into customer_contact
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+          <if test="ccId != null">
+            `cc_id`,
+          </if>
+          <if test="ccCuId != null">
+            `cc_cu_id`,
+          </if>
+          <if test="ccContact != null">
+            `cc_contact`,
+          </if>
+          <if test="ccPhone != null">
+            `cc_phone`,
+          </if>
+          <if test="ccAddTime != null">
+            `cc_add_time`
+          </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="ccId != null">
+              #{ccId},
+            </if>
+            <if test="ccCuId != null">
+              #{ccCuId},
+            </if>
+            <if test="ccContact != null">
+              #{ccContact},
+            </if>
+            <if test="ccPhone != null">
+              #{ccPhone},
+            </if>
+            <if test="ccAddTime != null">
+              #{ccAddTime}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" parameterType="com.luno.softone.model.entity.example.CustomerContactExample" resultType="java.lang.Integer" >
+        select count(*) from customer_contact
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+        update customer_contact
+        <set>
+          <if test="ccCuId != null">
+              `cc_cu_id` = #{ccCuId},
+          </if>
+          <if test="ccContact != null">
+              `cc_contact` = #{ccContact},
+          </if>
+          <if test="ccPhone != null">
+              `cc_phone` = #{ccPhone},
+          </if>
+          <if test="ccAddTime != null">
+              `cc_add_time` = #{ccAddTime}
+          </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map" >
+        update customer_contact
+        <set>
+          `cc_cu_id` = #{ccCuId},
+          `cc_contact` = #{ccContact},
+          `cc_phone` = #{ccPhone},
+          `cc_add_time` = #{ccAddTime}
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.luno.softone.model.entity.CustomerContactEntity">
+        update customer_contact
+        <set>
+          <if test="ccCuId != null">
+            `cc_cu_id` = #{ccCuId},
+          </if>
+          <if test="ccContact != null">
+            `cc_contact` = #{ccContact},
+          </if>
+          <if test="ccPhone != null">
+            `cc_phone` = #{ccPhone},
+          </if>
+          <if test="ccAddTime != null">
+            `cc_add_time` = #{ccAddTime}
+          </if>
+        </set>
+        where cc_id = #{ccId}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.luno.softone.model.entity.CustomerContactEntity" >
+        update customer_contact
+        <set>
+            `cc_cu_id` = #{ccCuId},
+            `cc_contact` = #{ccContact},
+            `cc_phone` = #{ccPhone},
+            `cc_add_time` = #{ccAddTime}
+        </set>
+        where cc_id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+    <select id="queryList" resultType="com.luno.softone.model.entity.CustomerContactEntity">
+        select
+          `cc_id`,
+          `cc_cu_id`,
+          `cc_contact`,
+          `cc_phone`,
+          `cc_add_time`
+        from customer_contact
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="ccCuId != null">
+            AND cc_cu_id = #{ccCuId}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by cc_id 
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from customer_contact
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+</mapper>

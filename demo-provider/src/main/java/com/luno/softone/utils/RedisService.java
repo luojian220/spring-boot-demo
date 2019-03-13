@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  * @author luojian
  * @version 4.0
  * @ClassName: RedisService
- * @Reason: TODO ADD REASON(可选)
+ * @Reason:
  * @date: 2018年05月22日 16:31
  * @since JDK 1.7
  */

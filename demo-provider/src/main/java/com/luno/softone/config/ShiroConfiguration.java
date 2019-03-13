@@ -17,7 +17,7 @@ import java.util.Map;
  * @author luojian
  * @version 1.0
  * @ClassName: ShiroConfiguration
- * @Reason: TODO ADD REASON(可选)
+ * @Reason:
  * @date: 2019年01月30日 15:21
  * @since JDK 1.7
  */

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author luojian
  * @version 1.0
  * @ClassName: StaticPathInterceptor
- * @Reason: TODO ADD REASON(可选)
+ * @Reason:
  * @date: 2019年01月29日 14:20
 
  * @since JDK 1.7

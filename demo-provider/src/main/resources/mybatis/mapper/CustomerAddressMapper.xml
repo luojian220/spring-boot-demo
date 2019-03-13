@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.luno.softone.dao.CustomerAddressMapper">
+
+    <resultMap type="com.luno.softone.model.entity.CustomerAddressEntity" id="BaseResultMap">
+        <result property="caId" column="ca_id"/>
+        <result property="caCuId" column="ca_cu_id"/>
+        <result property="caAddress" column="ca_address"/>
+        <result property="caAddTime" column="ca_add_time"/>
+        <result property="caMap" column="ca_map"/>
+        <result property="caMapDescription" column="ca_map_description"/>
+    </resultMap>
+
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List" >
+	    `ca_id`,
+	    `ca_cu_id`,
+	    `ca_address`,
+	    `ca_add_time`,
+	    `ca_map`,
+	    `ca_map_description`
+  	</sql>
+
+
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.luno.softone.model.entity.example.CustomerAddressExample" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from customer_address
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+        <if test="pageStart!=null and pageStart gt -1" >
+            limit ${pageStart},${pageSize}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from customer_address
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+        delete from customer_address
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.luno.softone.model.entity.example.CustomerAddressExample" >
+        delete from customer_address
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <delete id="deleteBatch">
+        delete from customer_address where ca_id in
+<foreach item="caId" collection="array" open="(" separator="," close=")">
+          #{caId}
+</foreach>
+    </delete>
+    <insert id="insert" parameterType="com.luno.softone.model.entity.CustomerAddressEntity">
+		insert into customer_address(
+          `ca_id`,
+          `ca_cu_id`,
+          `ca_address`,
+          `ca_add_time`,
+          `ca_map`,
+          `ca_map_description`        )
+		values(
+          #{caId},
+          #{caCuId},
+          #{caAddress},
+          #{caAddTime},
+          #{caMap},
+          #{caMapDescription}         )
+	</insert>
+
+
+    <insert id="insertSelective" parameterType="com.luno.softone.model.entity.CustomerAddressEntity">
+        insert into customer_address
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+          <if test="caId != null">
+            `ca_id`,
+          </if>
+          <if test="caCuId != null">
+            `ca_cu_id`,
+          </if>
+          <if test="caAddress != null">
+            `ca_address`,
+          </if>
+          <if test="caAddTime != null">
+            `ca_add_time`,
+          </if>
+          <if test="caMap != null">
+            `ca_map`,
+          </if>
+          <if test="caMapDescription != null">
+            `ca_map_description`
+          </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="caId != null">
+              #{caId},
+            </if>
+            <if test="caCuId != null">
+              #{caCuId},
+            </if>
+            <if test="caAddress != null">
+              #{caAddress},
+            </if>
+            <if test="caAddTime != null">
+              #{caAddTime},
+            </if>
+            <if test="caMap != null">
+              #{caMap},
+            </if>
+            <if test="caMapDescription != null">
+              #{caMapDescription}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="countByExample" parameterType="com.luno.softone.model.entity.example.CustomerAddressExample" resultType="java.lang.Integer" >
+        select count(*) from customer_address
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+        update customer_address
+        <set>
+          <if test="caCuId != null">
+              `ca_cu_id` = #{caCuId},
+          </if>
+          <if test="caAddress != null">
+              `ca_address` = #{caAddress},
+          </if>
+          <if test="caAddTime != null">
+              `ca_add_time` = #{caAddTime},
+          </if>
+          <if test="caMap != null">
+              `ca_map` = #{caMap},
+          </if>
+          <if test="caMapDescription != null">
+              `ca_map_description` = #{caMapDescription}
+          </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map" >
+        update customer_address
+        <set>
+          `ca_cu_id` = #{caCuId},
+          `ca_address` = #{caAddress},
+          `ca_add_time` = #{caAddTime},
+          `ca_map` = #{caMap},
+          `ca_map_description` = #{caMapDescription}
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.luno.softone.model.entity.CustomerAddressEntity">
+        update customer_address
+        <set>
+          <if test="caCuId != null">
+            `ca_cu_id` = #{caCuId},
+          </if>
+          <if test="caAddress != null">
+            `ca_address` = #{caAddress},
+          </if>
+          <if test="caAddTime != null">
+            `ca_add_time` = #{caAddTime},
+          </if>
+          <if test="caMap != null">
+            `ca_map` = #{caMap},
+          </if>
+          <if test="caMapDescription != null">
+            `ca_map_description` = #{caMapDescription}
+          </if>
+        </set>
+        where ca_id = #{caId}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.luno.softone.model.entity.CustomerAddressEntity" >
+        update customer_address
+        <set>
+            `ca_cu_id` = #{caCuId},
+            `ca_address` = #{caAddress},
+            `ca_add_time` = #{caAddTime},
+            `ca_map` = #{caMap},
+            `ca_map_description` = #{caMapDescription}
+        </set>
+        where ca_id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+    <select id="queryList" resultType="com.luno.softone.model.entity.CustomerAddressEntity">
+        select
+          `ca_id`,
+          `ca_cu_id`,
+          `ca_address`,
+          `ca_add_time`,
+          `ca_map`,
+          `ca_map_description`
+        from customer_address
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+        <if test="caCuId != null">
+            AND ca_cu_id = #{caCuId}
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by ca_id 
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="queryTotal" resultType="int">
+        select count(*) from customer_address
+        WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+    </select>
+</mapper>

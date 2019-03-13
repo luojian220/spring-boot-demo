@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @author luojian
  * @version 1.0
  * @ClassName: InterceptorConfig
- * @Reason: TODO ADD REASON(可选)
+ * @Reason:
  * @date: 2019年01月29日 14:30
 
  * @since JDK 1.7

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @author luojian
  * @version 1.0
  * @ClassName: MyApplicationRunner
- * @Reason: TODO ADD REASON(可选)
+ * @Reason:
  * @date: 2019年02月17日 15:15
  * @company:warWolf
  * @since JDK 1.8

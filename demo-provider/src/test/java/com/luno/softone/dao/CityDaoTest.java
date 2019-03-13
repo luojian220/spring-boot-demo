@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author luojian
  * @version 1.0
  * @ClassName: CityDaoTest
- * @Reason: TODO ADD REASON(可选)
+ * @Reason:
  * @date: 2019年01月28日 14:55
 
  * @since JDK 1.7
