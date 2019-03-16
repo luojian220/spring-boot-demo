@@ -1,4 +1,4 @@
-package com.luno.softone.controller;
+package com.luno.softone.controller.sys;
 
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;

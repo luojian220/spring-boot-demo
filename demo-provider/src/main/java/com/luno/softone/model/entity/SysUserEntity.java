@@ -2,7 +2,7 @@ package com.luno.softone.model.entity;
 
 import com.luno.softone.common.validator.group.AddGroup;
 import com.luno.softone.common.validator.group.UpdateGroup;
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.util.Date;

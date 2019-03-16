@@ -55,6 +55,6 @@
 	</Card>
 </div>
 
-<script src="${rc.contextPath}/js/shop/${pathName}.js?_${date.systemTime}"></script>
+<script src="/js/shop/${pathName}.js?_${date.systemTime}"></script>
 </body>
 </html>

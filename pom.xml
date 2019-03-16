@@ -13,6 +13,7 @@
         <module>demo-provider</module>
         <module>demo-common</module>
         <module>demo-generate</module>
+        <module>demo-quartz</module>
     </modules>
 
 

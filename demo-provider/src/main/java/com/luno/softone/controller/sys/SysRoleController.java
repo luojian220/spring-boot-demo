@@ -1,7 +1,8 @@
-package com.luno.softone.controller;
+package com.luno.softone.controller.sys;
 
 
 import com.luno.softone.common.annotation.SysLog;
+import com.luno.softone.controller.AbstractController;
 import com.luno.softone.model.entity.SysRoleEntity;
 import com.luno.softone.service.SysRoleDeptService;
 import com.luno.softone.service.SysRoleMenuService;

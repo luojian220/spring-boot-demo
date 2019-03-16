@@ -1,4 +1,4 @@
-package com.luno.softone.controller;
+package com.luno.softone.controller.sys;
 
 import com.luno.softone.common.annotation.SysLog;
 import com.luno.softone.common.utils.Constant;
@@ -9,6 +9,7 @@ import com.luno.softone.common.validator.Assert;
 import com.luno.softone.common.validator.ValidatorUtils;
 import com.luno.softone.common.validator.group.AddGroup;
 import com.luno.softone.common.validator.group.UpdateGroup;
+import com.luno.softone.controller.AbstractController;
 import com.luno.softone.model.entity.SysUserEntity;
 import com.luno.softone.model.entity.ThirdBindEntity;
 import com.luno.softone.service.SysUserRoleService;

@@ -1,4 +1,4 @@
-package com.luno.softone.controller;
+package com.luno.softone.controller.sys;
 
 import com.luno.softone.common.annotation.SysLog;
 import com.luno.softone.common.exception.RRException;
@@ -6,6 +6,7 @@ import com.luno.softone.common.utils.Constant;
 import com.luno.softone.common.utils.PageUtils;
 import com.luno.softone.common.utils.Query;
 import com.luno.softone.common.utils.R;
+import com.luno.softone.controller.AbstractController;
 import com.luno.softone.model.entity.SysMenuEntity;
 import com.luno.softone.service.SysMenuService;
 import org.apache.commons.lang3.StringUtils;

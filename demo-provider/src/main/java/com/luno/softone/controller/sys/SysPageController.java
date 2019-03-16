@@ -1,4 +1,4 @@
-package com.luno.softone.controller;
+package com.luno.softone.controller.sys;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
