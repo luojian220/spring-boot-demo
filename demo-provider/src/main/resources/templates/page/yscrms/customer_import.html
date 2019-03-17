@@ -22,7 +22,7 @@
                             :on-error="handleError"
                             action="../customer/importCustomer"
                             :format="['xsl','xlsx']"
-                            :max-size="2048">
+                            >
                         <i-button icon="ios-cloud-upload-outline" type="success">选择上传文件</i-button>
                     </Upload>
                     <div v-if="file !== null">即将上传文件: {{ file.name }} <i-button type="info" @click="upload" :loading="loadingStatus">{{ loadingStatus ? '上传中' : '上传' }}</i-button></div>
@@ -52,4 +52,3 @@
 <script src="/js/yscrms/customer_import.js?v=3"></script>
 </body>
 </html>
- #parse("sys/foot.html")
