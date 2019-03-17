@@ -44,6 +44,7 @@
         </Row>
 	    <table id="jqGrid"></table>
 	    <div id="jqGridPager"></div>
+        <span th:text="${jsVersion}"></span>
     </div>
 
     <Card v-show="!showList">
@@ -199,6 +200,6 @@
 	</Card>
 </div>
 
-<script src="/js/yscrms/customer.js?v=1"></script>
+<script th:src="'/js/yscrms/customer.js?v=' + ${jsVersion}"></script>
 </body>
 </html>
