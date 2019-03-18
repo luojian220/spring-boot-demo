@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title></title>
     <head th:replace="sys/header"></head>
@@ -68,7 +68,7 @@
             <Form-item label="电话" prop="cuPhone">
                 <i-input v-model="customer.cuPhone" placeholder="电话"/>
             </Form-item>
-            
+
            <row>
 			 <Form-item v-for="(item, index) in customer.address"
 			            	:label="'地址'+(index+1)"  :key="index"
@@ -83,7 +83,7 @@
 	              </Col>
 	               </Form-item>
 	            </row>
-          
+
              <row>
 	             <FormItem  v-for="(item, index) in customer.contact">
 			             <i-col span=10>
@@ -106,10 +106,10 @@
 		              </i-col>
 			      </FormItem>
 			   </row>
-            
-            
-            
-            
+
+
+
+
 <!--             <Form-item label="地址" prop="cuAddress">
                 <i-input v-model="customer.cuAddress" placeholder="地址"/>
             </Form-item>
