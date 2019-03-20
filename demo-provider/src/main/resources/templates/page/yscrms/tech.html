@@ -16,9 +16,7 @@
                     <Date-picker type="date" v-model="q.endTime" format="yyyy-MM-dd" placeholder="完成结束日期"></Date-picker>
                 </i-col>
                 <i-button @click="query">&nbsp;统计</i-button>
-                #if($shiro.hasPermission("stats:tech:export"))
                 <i-button type="info" @click="exportDisp"><i class="fa fa-cloud-download"></i>&nbsp;导出</i-button>
-                #end
             </div>
         </Row>
         <table id="jqGrid"></table>

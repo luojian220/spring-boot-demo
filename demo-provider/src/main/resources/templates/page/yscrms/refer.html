@@ -28,9 +28,7 @@
                     <Date-picker type="date" v-model="q.endTime" format="yyyy-MM-dd" placeholder="调度结束日期"></Date-picker>
                 </i-col>
                 <i-button @click="query">&nbsp;统计</i-button>
-                #if($shiro.hasPermission("stats:refer:export"))
                 <i-button type="info" @click="exportRefer"><i class="fa fa-cloud-download"></i>&nbsp;&nbsp;导出</i-button>
-                #end
 
             </div>
         </Row>

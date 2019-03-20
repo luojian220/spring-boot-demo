@@ -65,21 +65,10 @@
             </div>
             <div class="buttons-group">
 
-                #if($shiro.hasPermission("dispatch:query"))
                 <i-button type="info" @click="query_dispatch" v-show="queryBtn"><i class="fa fa-pencil-square-o" ></i>&nbsp;查看</i-button>
-                #end
-                #if($shiro.hasPermission("dispatch:dispatch"))
                 <i-button type="warning" @click="dispatch" v-show="dispatchBtn"><i class="fa fa-pencil-square-o"></i>&nbsp;调度/再次调度</i-button>
-                #end
-                #if($shiro.hasPermission("dispatch:back"))
                 <i-button type="error" @click="dispatchBack" v-show="dispatchBackBtn"><i class="fa fa-trash-o"></i>&nbsp;注销案件</i-button>
-                #end
-                #if($shiro.hasPermission("dispatch:cancel"))
                 <i-button type="primary" @click="cancel" v-show="cancelBtn"><i class="fa fa-trash-o"></i>&nbsp;取消调度</i-button>
-                #end
-                <!--#if($shiro.hasPermission("dispatch:again"))
-                <i-button type="warning" @click="again" v-show="againBtn"><i class="fa fa-trash-o"></i>&nbsp;再次调度</i-button>
-                #end-->
             </div>
         </Row>
 	    <table id="jqGrid"></table>
