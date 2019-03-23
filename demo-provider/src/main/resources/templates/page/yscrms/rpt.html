@@ -22,9 +22,7 @@
                     <Date-picker v-model="q.endTime" placeholder="结束日期"></Date-picker>
                 </i-col>
                 <i-button @click="query">统计</i-button>
-                #if($shiro.hasPermission("stats:rpt:export"))
                 <i-button type="info" @click="exportRpt"><i class="fa fa-cloud-download"></i>&nbsp;&nbsp;导出</i-button>
-                #end
             </div>
         </Row>
         <table id="jqGrid"></table>

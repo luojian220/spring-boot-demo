@@ -30,15 +30,9 @@
                 <i-button @click="reloadSearch">重置</i-button>
             </div>
             <div class="buttons-group">
-                #if($shiro.hasPermission("technicianservice:save"))
                 <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</i-button>
-                #end
-                #if($shiro.hasPermission("technicianservice:update"))
                 <i-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</i-button>
-                #end
-                #if($shiro.hasPermission("technicianservice:delete"))
                 <i-button type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
-                #end
             </div>
         </Row>
 	    <table id="jqGrid"></table>

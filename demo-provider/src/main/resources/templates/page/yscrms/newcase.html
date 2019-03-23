@@ -76,9 +76,9 @@
                 <!--#if($shiro.hasPermission("newcase:delete"))
                 <i-button type="error" @click="del" v-show="deleteBtnFlag"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
                 #end-->
-                #if($shiro.hasPermission("newcase:report"))
+                <!--#if($shiro.hasPermission("newcase:report"))-->
                 <i-button type="error" @click="report" v-show="reportBtnFlag"><i class="fa fa-trash-o"></i>&nbsp;再次上报</i-button>
-                #end
+               <!-- #end-->
             </div>
         </Row>
 	    <table id="jqGrid"></table>
