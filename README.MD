@@ -16,7 +16,7 @@
     
     redis
     mysql
-    
+     
 ### 2.项目启动
     数据库依赖: 执行sql脚本创建数据库结构,项目根目录 dump-ys-crms-201903171348.sql
     redis： 修改redis连接信息
