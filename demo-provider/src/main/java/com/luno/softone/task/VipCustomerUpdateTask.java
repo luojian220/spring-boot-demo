@@ -16,7 +16,7 @@ import java.util.Map;
  * @author luojian
  * @version 1.0
  * @ClassName: VipCustomerUpdateTask
- * @Reason: TODO ADD REASON(可选)
+ * @Reason:
  * @date: 2018年11月28日 21:25
  * @company:warWolf
  * @since JDK 1.8
