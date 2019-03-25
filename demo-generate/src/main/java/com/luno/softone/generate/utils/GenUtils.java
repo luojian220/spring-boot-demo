@@ -160,6 +160,26 @@ public class GenUtils {
         }
     }
 
+    /**
+     * 根据模板生成 生成字符串内容
+     * @param template
+     * @param paramMap
+     */
+    public static String generateFromTemplate(String template, Map<String,Object> paramMap) {
+
+        try {
+            VelocityContext velocityContext = new VelocityContext();
+            for (String key : paramMap.keySet()) {
+                velocityContext.put(key, paramMap.get(key));
+            }
+            StringWriter writer = new StringWriter();
+            Velocity.evaluate(velocityContext, writer, "generateFromTemplate", template);
+            return writer.getBuffer().toString();
+        } catch (Exception e) {
+            throw new RuntimeException("Parse Velocity Template Error");
+        }
+    }
+
 
     /**
      * 列名转换成Java属性名
