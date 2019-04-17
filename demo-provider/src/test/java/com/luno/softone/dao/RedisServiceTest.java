@@ -79,7 +79,7 @@ public class RedisServiceTest {
         boolean flag = redisService.tryGetDistributedLock(redisKey,value,10L);
         System.out.println("flag:" + flag);
         if (flag) {
-            String result = (String) redisService.getStringByStringSerializer(redisKey);
+            String result = redisService.getStringByStringSerializer(redisKey);
             System.out.println("result:" + result);
             boolean reFlag = redisService.releaseDistributedLock(redisKey,value);
             if (reFlag) {

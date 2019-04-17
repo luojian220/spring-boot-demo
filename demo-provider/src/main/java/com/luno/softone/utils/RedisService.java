@@ -235,9 +235,9 @@ public class RedisService {
     public boolean tryGetDistributedLock(String lockKey, String requestId, long expireTime) {
         logger.info("try get distributed lock:{lockKey:{},requestId:{}}", lockKey, requestId);
         Boolean result = (Boolean) redisTemplate.execute((RedisCallback<Boolean>) connection -> {
-            RedisSerializer<String> keySerializer = redisTemplate.getKeySerializer();
-            Object result1 = connection.execute("set", keySerializer.serialize(lockKey), keySerializer.serialize(requestId),
-                    keySerializer.serialize(SET_IF_NOT_EXIST), keySerializer.serialize(SET_WITH_EXPIRE_TIME),
+            RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
+            Object result1 = connection.execute("set", serializer.serialize(lockKey), serializer.serialize(requestId),
+                    serializer.serialize(SET_IF_NOT_EXIST), serializer.serialize(SET_WITH_EXPIRE_TIME),
                     SafeEncoder.encode(String.valueOf(expireTime)));
 
             return LOCK_SUCCESS.equals(result1);
