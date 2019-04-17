@@ -1,10 +1,5 @@
 package com.luno.softone.utils;
 
-import org.apache.curator.RetryPolicy;
-import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.framework.recipes.locks.InterProcessMutex;
-import org.apache.curator.retry.BoundedExponentialBackoffRetry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -293,22 +288,5 @@ public class RedisService {
         }
     }
 
-    /**
-     * 测试 zk 分布式锁
-     * @param lockPath
-     * @throws Exception
-     */
-    public static void main(String[] args) throws Exception {
-        RetryPolicy retryPolicy = new BoundedExponentialBackoffRetry(1000,3,3);
-        CuratorFramework client = CuratorFrameworkFactory.newClient("127.0.0.1:2181",retryPolicy);
-
-        client.start();
-        InterProcessMutex mutex = new InterProcessMutex(client,"test2");
-        // 获得了锁
-        mutex.acquire();
-        // 完成业务 ， 释放锁
-        mutex.release();
-        client.close();
-    }
 
 }
