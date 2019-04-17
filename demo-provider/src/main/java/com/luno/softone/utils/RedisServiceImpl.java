@@ -1,24 +1,23 @@
 package com.luno.softone.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.luno.softone.controller.CustomerController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.RedisSystemException;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Service;
-import redis.clients.util.SafeEncoder;
 
-import javax.validation.constraints.NotNull;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 /**
  * @author luojian
  * @version 1.0
  * @ClassName: RedisServiceImpl
- * @Reason:
+ * @Reason:  该类只是参考，不使用
  * @date: 2019年04月17日 10:19
  * @since JDK 1.7
  */
@@ -56,7 +55,7 @@ public class RedisServiceImpl implements IRedisService {
                 RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
                 Object result1 = connection.execute("set", serializer.serialize(key), serializer.serialize(value),
                         serializer.serialize(nxxx), serializer.serialize(expx),
-                        SafeEncoder.encode(String.valueOf(time)));
+                        getByteArray(String.valueOf(time)));
 
                 if (LOCK_SUCCESS.equals(result1)) {
                     return true;
@@ -129,5 +128,18 @@ public class RedisServiceImpl implements IRedisService {
             return serializer.deserialize(res);
         });
         return result;
+    }
+
+    private byte[] getByteArray(String str) {
+
+        try {
+            if (str == null) {
+                throw new RuntimeException("value sent to redis cannot be null");
+            } else {
+                return str.getBytes("UTF-8");
+            }
+        } catch (UnsupportedEncodingException var2) {
+            throw new RedisSystemException("redis string to byte exception",var2);
+        }
     }
 }

@@ -1,8 +1,14 @@
 package com.luno.softone.utils;
 
+import org.apache.curator.RetryPolicy;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.recipes.locks.InterProcessMutex;
+import org.apache.curator.retry.BoundedExponentialBackoffRetry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.RedisSystemException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.core.HashOperations;
@@ -14,8 +20,6 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
-import redis.clients.jedis.exceptions.JedisDataException;
-import redis.clients.jedis.exceptions.JedisException;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -280,13 +284,31 @@ public class RedisService {
 
         try {
             if (str == null) {
-                throw new JedisDataException("value sent to redis cannot be null");
+                throw new RuntimeException("value sent to redis cannot be null");
             } else {
                 return str.getBytes("UTF-8");
             }
         } catch (UnsupportedEncodingException var2) {
-            throw new JedisException(var2);
+            throw new RedisSystemException("redis string to byte exception",var2);
         }
+    }
+
+    /**
+     * 测试 zk 分布式锁
+     * @param lockPath
+     * @throws Exception
+     */
+    public static void main(String[] args) throws Exception {
+        RetryPolicy retryPolicy = new BoundedExponentialBackoffRetry(1000,3,3);
+        CuratorFramework client = CuratorFrameworkFactory.newClient("127.0.0.1:2181",retryPolicy);
+
+        client.start();
+        InterProcessMutex mutex = new InterProcessMutex(client,"test2");
+        // 获得了锁
+        mutex.acquire();
+        // 完成业务 ， 释放锁
+        mutex.release();
+        client.close();
     }
 
 }
