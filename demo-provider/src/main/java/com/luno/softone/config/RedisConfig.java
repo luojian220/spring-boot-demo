@@ -44,10 +44,10 @@ public class RedisConfig {
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
         // 设置value的序列化规则和 key的序列化规则
         redisTemplate.setKeySerializer(stringRedisSerializer);
-        //redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
 
         redisTemplate.setHashKeySerializer(stringRedisSerializer);
-        //redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
 
         redisTemplate.afterPropertiesSet();
         return redisTemplate;

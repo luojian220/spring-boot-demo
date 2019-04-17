@@ -4,7 +4,7 @@ import com.luno.softone.common.utils.Constant;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -63,13 +63,13 @@ public class CluterShiroSessionDao extends EnterpriseCacheSessionDAO {
     }
 
     private Session getShiroSession(String key) {
-        redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<Session>(Session.class));
         return redisTemplate.opsForValue().get(key);
     }
 
     private void setShiroSession(String key, Session session) {
 
-        redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<Session>(Session.class));
         redisTemplate.opsForValue().set(key,session);
         redisTemplate.expire(key,GLOBAL_SESSION_TIMEOUT, TimeUnit.SECONDS);
     }

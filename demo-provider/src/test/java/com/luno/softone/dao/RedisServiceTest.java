@@ -1,5 +1,6 @@
 package com.luno.softone.dao;
 
+import com.luno.softone.utils.IRedisService;
 import com.luno.softone.utils.RedisService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,5 +51,40 @@ public class RedisServiceTest {
         redisService.remove("test_id");
         redisService.remove("test_date");
 
+    }
+
+
+    @Autowired
+    private IRedisService redisService2;
+
+    @Test
+    public void redisLock() {
+        String redisKey = "test_1";
+        String value = "sdf4s5";
+        boolean flag = redisService2.set(redisKey,value,"NX","EX",10L);
+        System.out.println("flag:" + flag);
+        if (flag) {
+            String result = redisService2.get(redisKey);
+            System.out.println("result:" + result);
+        }
+    }
+
+    /**
+     * 测试加分布式锁 及 释放锁
+     */
+    @Test
+    public void redisLockAndRelease() {
+        String redisKey = "test_1";
+        String value = "sdf4s5";
+        boolean flag = redisService.tryGetDistributedLock(redisKey,value,10L);
+        System.out.println("flag:" + flag);
+        if (flag) {
+            String result = (String) redisService.getStringByStringSerializer(redisKey);
+            System.out.println("result:" + result);
+            boolean reFlag = redisService.releaseDistributedLock(redisKey,value);
+            if (reFlag) {
+                System.out.println("release result:" + reFlag);
+            }
+        }
     }
 }

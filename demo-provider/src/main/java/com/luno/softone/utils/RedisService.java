@@ -1,14 +1,21 @@
 package com.luno.softone.utils;
 
+import com.luno.softone.controller.CustomerController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.connection.ReturnType;
 import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import redis.clients.util.SafeEncoder;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author luojian
@@ -21,6 +28,13 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 public class RedisService {
+
+    private static final Logger logger = LoggerFactory.getLogger(RedisService.class);
+
+    private static final String LOCK_SUCCESS = "OK";
+    private static final String SET_IF_NOT_EXIST = "NX";
+    private static final String SET_WITH_EXPIRE_TIME = "EX";
+    private static final Long RELEASE_SUCCESS = 1L;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -51,8 +65,7 @@ public class RedisService {
         boolean result = false;
         try {
             ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
-            operations.set(key, value);
-            redisTemplate.expire(key, expireTime, TimeUnit.SECONDS);
+            operations.set(key, value,expireTime);
             result = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -192,4 +205,70 @@ public class RedisService {
         ZSetOperations<String, Object> zset = redisTemplate.opsForZSet();
         return zset.rangeByScore(key, scoure, scoure1);
     }
+
+
+    /**
+     * 序列化方式为：用StringSerializer 获取key，及用StringSerializer反序列化value
+     * 读取缓存
+     * @param key
+     * @return
+     */
+    public String getStringByStringSerializer(final String key) {
+        String result = (String) redisTemplate.execute((RedisCallback<String>) connection -> {
+            RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
+            byte[] value = connection.get(serializer.serialize(key));
+            return serializer.deserialize(value);
+        });
+        return result;
+    }
+
+    /**
+     * 尝试获取分布式锁
+     *  lockKey作为一个全局锁标识，requestId作为持有锁用户线程唯一标识。
+     *  用户线程A获取锁后，为防止其他线程或其他客户端释放锁，requestId作为校验依据
+     *  如果持有锁的线程异常中断，未及时释放锁，需等待expireTime秒的超时时间，自动释放。
+     * @param lockKey    锁key
+     * @param requestId  请求标识
+     * @param expireTime 超期时间
+     * @return 是否获取成功
+     */
+    public boolean tryGetDistributedLock(String lockKey, String requestId, long expireTime) {
+        logger.info("try get distributed lock:{lockKey:{},requestId:{}}", lockKey, requestId);
+        Boolean result = (Boolean) redisTemplate.execute((RedisCallback<Boolean>) connection -> {
+            RedisSerializer<String> keySerializer = redisTemplate.getKeySerializer();
+            Object result1 = connection.execute("set", keySerializer.serialize(lockKey), keySerializer.serialize(requestId),
+                    keySerializer.serialize(SET_IF_NOT_EXIST), keySerializer.serialize(SET_WITH_EXPIRE_TIME),
+                    SafeEncoder.encode(String.valueOf(expireTime)));
+
+            return LOCK_SUCCESS.equals(result1);
+        });
+        if (result) {
+            logger.info("try get distributed lock success!:{lockKey:{},requestId:{}} ", lockKey, requestId);
+        }
+        return result;
+    }
+
+    /**
+     * 释放分布式锁
+     *  lockKey作为一个全局锁标识，requestId作为持有锁用户线程唯一标识。
+     *  用户线程A获取锁后，为防止其他线程或其他客户端释放锁，requestId作为校验依据
+     *  如果持有锁的线程异常中断，未及时释放锁，需等待expireTime秒的超时时间，自动释放。
+     * @param lockKey   锁
+     * @param requestId 请求标识 每次获取锁与释放锁传入相同值
+     * @return 是否释放成功
+     */
+    public boolean releaseDistributedLock(String lockKey, String requestId) {
+
+        logger.info("release lock:{lockKey:{},requestId:{}}", lockKey, requestId);
+        String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+        return redisTemplate.execute(
+                (RedisConnection connection) -> connection.eval(
+                        script.getBytes(),
+                        ReturnType.INTEGER,
+                        1,
+                        lockKey.getBytes(),
+                        requestId.getBytes())
+        ).equals(RELEASE_SUCCESS);
+    }
+
 }
