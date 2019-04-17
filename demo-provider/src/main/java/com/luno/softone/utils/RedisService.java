@@ -1,19 +1,24 @@
 package com.luno.softone.utils;
 
-import com.luno.softone.controller.CustomerController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.ReturnType;
-import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisCallback;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import redis.clients.util.SafeEncoder;
+import redis.clients.jedis.exceptions.JedisDataException;
+import redis.clients.jedis.exceptions.JedisException;
 
 import java.io.Serializable;
-import java.util.Collections;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Set;
 
@@ -229,7 +234,7 @@ public class RedisService {
      *  如果持有锁的线程异常中断，未及时释放锁，需等待expireTime秒的超时时间，自动释放。
      * @param lockKey    锁key
      * @param requestId  请求标识
-     * @param expireTime 超期时间
+     * @param expireTime 超期时间  单位秒
      * @return 是否获取成功
      */
     public boolean tryGetDistributedLock(String lockKey, String requestId, long expireTime) {
@@ -238,12 +243,11 @@ public class RedisService {
             RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
             Object result1 = connection.execute("set", serializer.serialize(lockKey), serializer.serialize(requestId),
                     serializer.serialize(SET_IF_NOT_EXIST), serializer.serialize(SET_WITH_EXPIRE_TIME),
-                    SafeEncoder.encode(String.valueOf(expireTime)));
-
+                    getByteArray(String.valueOf(expireTime)));
             return LOCK_SUCCESS.equals(result1);
         });
         if (result) {
-            logger.info("try get distributed lock success!:{lockKey:{},requestId:{}} ", lockKey, requestId);
+            logger.info("success get distributed lock:{lockKey:{},requestId:{}} ", lockKey, requestId);
         }
         return result;
     }
@@ -269,6 +273,20 @@ public class RedisService {
                         lockKey.getBytes(),
                         requestId.getBytes())
         ).equals(RELEASE_SUCCESS);
+    }
+
+
+    private byte[] getByteArray(String str) {
+
+        try {
+            if (str == null) {
+                throw new JedisDataException("value sent to redis cannot be null");
+            } else {
+                return str.getBytes("UTF-8");
+            }
+        } catch (UnsupportedEncodingException var2) {
+            throw new JedisException(var2);
+        }
     }
 
 }
