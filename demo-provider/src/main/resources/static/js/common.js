@@ -186,6 +186,7 @@ function handleSubmitValidate(vue, name, callback) {
  */
 function transDate(date, fmt) {
 
+
     if (date) {
         if (typeof date == 'number') {
             return new Date(date).dateFormat(fmt);
@@ -194,7 +195,8 @@ function transDate(date, fmt) {
         } else if (typeof date == 'string' && date.indexOf("T") > 0) {
             //"2019-02-27T10:21:37.000+0000"
             var d = new Date(date);
-            return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+            return d.dateFormat(fmt);
+            //return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
         } else {
             try {
                 return new Date(date.replace('-', '/').replace('-', '/')).dateFormat(fmt);

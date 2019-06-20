@@ -5,6 +5,7 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -63,14 +64,26 @@ public class CluterShiroSessionDao extends EnterpriseCacheSessionDAO {
     }
 
     private Session getShiroSession(String key) {
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<Session>(Session.class));
-        return redisTemplate.opsForValue().get(key);
+
+        redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+        Session session = redisTemplate.opsForValue().get(key);
+        // 序列号方式 还原
+        serializerInit();
+        return session;
     }
 
     private void setShiroSession(String key, Session session) {
 
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<Session>(Session.class));
+        redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
         redisTemplate.opsForValue().set(key,session);
         redisTemplate.expire(key,GLOBAL_SESSION_TIMEOUT, TimeUnit.SECONDS);
+        // 序列号方式 还原
+        serializerInit();
+    }
+
+    // redis序列号方式 还原
+    private void serializerInit() {
+        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
+        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
     }
 }
