@@ -8,6 +8,8 @@ import com.luno.softone.service.SysConfigService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,12 @@ public class SysConfigServiceImpl implements SysConfigService {
 	
 	@Override
 	public void save(SysConfigEntity config) {
+		sysConfigDao.save(config);
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void saveForTest(SysConfigEntity config) {
 		sysConfigDao.save(config);
 	}
 

@@ -19,6 +19,8 @@ public interface SysConfigService {
      */
     public void save(SysConfigEntity config);
 
+    void saveForTest(SysConfigEntity config);
+
     /**
      * 更新配置信息
      */
