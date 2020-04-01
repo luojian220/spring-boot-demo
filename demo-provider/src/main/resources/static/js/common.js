@@ -194,9 +194,7 @@ function transDate(date, fmt) {
             return date.dateFormat(fmt);
         } else if (typeof date == 'string' && date.indexOf("T") > 0) {
             //"2019-02-27T10:21:37.000+0000"
-            var d = new Date(date);
-            return d.dateFormat(fmt);
-            //return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
+            return moment(date).format('YYYY-MM-DD HH:mm:ss');
         } else {
             try {
                 return new Date(date.replace('-', '/').replace('-', '/')).dateFormat(fmt);
